@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+  php:
+    build:
+      context: php
+    container_name: ${PHP_CONTAINER_NAME}
+    env_file: .env
+    volumes:
+      - ../:/app:cached
+    environment:
+      PHP_IDE_CONFIG: "serverName=docker-server"
+
+  nginx:
+    build:
+      context: nginx
+    container_name: ${NGINX_CONTAINER_NAME}
+    depends_on:
+      - php
+    volumes:
+      - ../:/app:cached
+      - "./nginx/conf.d:/etc/nginx/conf.d"
+    ports:
+      - "${NGINX_EXTERNAL_PORT}:80"
+  db:
+    build: ./db
+    container_name: ${DB_CONTAINER_NAME}
+    ports:
+      - "${DB_EXTERNAL_PORT}:5432"
+    volumes:
+      - "${DB_EXTERNAL_DATA}:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME}
