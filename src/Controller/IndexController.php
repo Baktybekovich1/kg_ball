@@ -12,11 +12,6 @@ class IndexController extends AbstractController
     #[Route('/index', name: 'app_index')]
     public function index(): JsonResponse
     {
-        $player = new Player("Aizatbek", 'Aitbaev', 19);
-        //Создаём обьект на основе класса Player
-
-        return $this->json([
-            $player->name
-        ]);
+        return $this->json['awdwd'];
     }
 }

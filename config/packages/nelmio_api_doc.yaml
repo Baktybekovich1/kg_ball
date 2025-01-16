@@ -1,0 +1,9 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: 'Finlogs API'
+            description: 'API for application Finlogs'
+            version: '1.0.0'
+    areas: # Точки входа, где будет применяться документирование
+        path_patterns:
+            - ^/api

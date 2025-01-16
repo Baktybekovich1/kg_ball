@@ -12,6 +12,10 @@ RUN apt-get update && apt-get install -y \
     libzip-dev
 RUN docker-php-ext-install zip
 
+RUN \
+    apt-get install git unzip wait-for-it wget libicu-dev -y && \
+    docker-php-ext-install intl pdo_mysql && \
+    echo 'extension=intl.so' > /usr/local/etc/php/conf.d/docker-php-ext-intl.ini && \
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
