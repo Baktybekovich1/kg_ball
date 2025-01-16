@@ -21,10 +21,9 @@ class GameCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            AssociationField::new('team' )->renderAsNativeWidget(),
-            AssociationField::new('opponent')->renderAsNativeWidget(),
-            AssociationField::new('tourney')->renderAsNativeWidget(),
-            BooleanField::new('atHome')
+            AssociationField::new('homeTeam' )->renderAsNativeWidget(),
+            AssociationField::new('awayTeam' )->renderAsNativeWidget(),
+            AssociationField::new('tourney')->renderAsNativeWidget()
         ];
     }
 

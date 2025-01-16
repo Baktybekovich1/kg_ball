@@ -18,33 +18,24 @@ class Game
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'games')]
-    private ?Team $team = null;
+    private ?Team $homeTeam = null;
 
-    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'games')]
-    private ?self $opponent = null;
-
-
-    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'opponent')]
-    private Collection $games;
-
-    #[ORM\Column]
-    private ?bool $atHome = null;
+    #[ORM\ManyToOne(inversedBy: 'games')]
+    private ?Team $awayTeam = null;
 
     #[ORM\ManyToOne(inversedBy: 'games')]
     private ?Tourney $tourney = null;
-
 
     #[ORM\OneToMany(targetEntity: Goal::class, mappedBy: 'game')]
     private Collection $goals;
 
     public function __toString(): string
     {
-        return $this->team->getTitle() ?? 'Unnamed Team and opponent';
+        return $this->homeTeam->getTitle() . 'VS' . $this->awayTeam->getTitle() . ' ' . $this->getTourney() . ' ' . $this->getTourney()->getDate() ?? 'Unnamed Team and opponent';
     }
 
     public function __construct()
     {
-        $this->games = new ArrayCollection();
         $this->goals = new ArrayCollection();
     }
 
@@ -55,69 +46,36 @@ class Game
 
     public function getTeam(): ?Team
     {
-        return $this->team;
+        return $this->homeTeam;
     }
 
     public function setTeam(?Team $team): static
     {
-        $this->team = $team;
+        $this->awayTeam = $team;
 
         return $this;
     }
 
-    public function getOpponent(): ?self
+    public function getHomeTeam(): ?Team
     {
-        return $this->opponent;
+        return $this->homeTeam;
     }
 
-    public function setOpponent(?self $opponent): static
+    public function setHomeTeam(?Team $homeTeam): void
     {
-        $this->opponent = $opponent;
-
-        return $this;
+        $this->homeTeam = $homeTeam;
     }
 
-    /**
-     * @return Collection<int, self>
-     */
-    public function getGames(): Collection
+    public function getAwayTeam(): ?Team
     {
-        return $this->games;
+        return $this->awayTeam;
     }
 
-    public function addGame(self $game): static
+    public function setAwayTeam(?Team $awayTeam): void
     {
-        if (!$this->games->contains($game)) {
-            $this->games->add($game);
-            $game->setOpponent($this);
-        }
-
-        return $this;
+        $this->awayTeam = $awayTeam;
     }
 
-    public function removeGame(self $game): static
-    {
-        if ($this->games->removeElement($game)) {
-            // set the owning side to null (unless already changed)
-            if ($game->getOpponent() === $this) {
-                $game->setOpponent(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function isAtHome(): ?bool
-    {
-        return $this->atHome;
-    }
-
-    public function setAtHome(bool $atHome): static
-    {
-        $this->atHome = $atHome;
-
-        return $this;
-    }
 
     public function getTourney(): ?Tourney
     {
@@ -131,9 +89,6 @@ class Game
         return $this;
     }
 
-    /**
-     * @return Collection<int, Goal>
-     */
     public function getGoals(): Collection
     {
         return $this->goals;
