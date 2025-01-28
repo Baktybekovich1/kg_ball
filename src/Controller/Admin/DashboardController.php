@@ -3,10 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Assist;
+use App\Entity\AwardForTeam;
 use App\Entity\Game;
 use App\Entity\Goal;
 use App\Entity\Player;
 use App\Entity\Team;
+use App\Entity\TeamAward;
 use App\Entity\Tourney;
 use App\Entity\TypeOfGoal;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -48,12 +50,14 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-         yield MenuItem::linkToCrud('Team', 'fas fa-team', Team::class);
-         yield MenuItem::linkToCrud('Player', 'fas fa-player', Player::class);
-         yield MenuItem::linkToCrud('Tourney', 'fas fa-tourney', Tourney::class);
-         yield MenuItem::linkToCrud('Type Of Goal', 'fas fa-goal', TypeOfGoal::class);
-         yield MenuItem::linkToCrud('Game', 'fas fa-game', Game::class);
-         yield MenuItem::linkToCrud('Goal', 'fas fa-goal', Goal::class);
-         yield MenuItem::linkToCrud('Assist', 'fas fa-assist', Assist::class);
+         yield MenuItem::linkToCrud('Team', 'fas fa-shield', Team::class);
+         yield MenuItem::linkToCrud('Player', 'fas fa-user', Player::class);
+         yield MenuItem::linkToCrud('Tourney', 'fas fa-medal', Tourney::class);
+         yield MenuItem::linkToCrud('Type Of Goal', 'fas fa-tv', TypeOfGoal::class);
+         yield MenuItem::linkToCrud('Game', 'fas fa-clock', Game::class);
+         yield MenuItem::linkToCrud('Goal', 'fas fa-clock', Goal::class);
+         yield MenuItem::linkToCrud('Assist', 'fas fa-clock', Assist::class);
+         yield MenuItem::linkToCrud('Award for Team', 'fas fa-clock', AwardForTeam::class);
+         yield MenuItem::linkToCrud('Team Award', 'fas fa-clock', TeamAward::class);
     }
 }

@@ -16,28 +16,11 @@ class AssistRepository extends ServiceEntityRepository
         parent::__construct($registry, Assist::class);
     }
 
-    //    /**
-    //     * @return Assist[] Returns an array of Assist objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('a.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Assist
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function getPlayerAssistQuantity(int $player_id): ?int
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "SELECT COUNT(*) FROM assist g LEFT JOIN player p ON g.player_id = p.id WHERE g.player_id = :player_id";
+        $result = $conn->executeQuery($sql, ['player_id' => $player_id]);
+        return $result->fetchOne();
+    }
 }

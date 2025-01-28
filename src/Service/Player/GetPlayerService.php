@@ -5,22 +5,27 @@ namespace App\Service\Player;
 use App\Dto\Player\GetPlayerListDto;
 use App\Dto\Player\GetPlayerPersonalCardDto;
 use App\Dto\Player\GetPlayerStatisticDto;
+use App\Entity\Player;
+use App\Repository\AssistRepository;
+use App\Repository\GoalRepository;
 use App\Repository\PlayerRepository;
+use App\Repository\TypeOfGoalRepository;
 
 class GetPlayerService
 {
     public function __construct(
-        private readonly PlayerRepository $playerRepository
+        private readonly PlayerRepository     $playerRepository,
+        private readonly GoalRepository       $goalRepository,
+        private readonly AssistRepository     $assistRepository
     )
     {
     }
 
-    public function GetPlayersPersonalCard($id): array
+    public function GetPlayersPersonalCard($id): GetPlayerPersonalCardDto
     {
         $player = $this->playerRepository->find($id);
-        $personalCard = [];
 
-        $personalCard[$player->getId()] = new GetPlayerPersonalCardDto(
+        return new GetPlayerPersonalCardDto(
             $player->getId(),
             $player->getName() . ' ' . $player->getSurname(),
             $player->getBirthday(),
@@ -28,34 +33,30 @@ class GetPlayerService
             $player->getTeam()->getId(),
             $player->getTeam()->getTitle(),
         );
-
-        return $personalCard;
     }
 
     public function getPlayersList(): array
     {
-        $players = $this->playerRepository->findAll();
-        $playersList = [];
-        foreach ($players as $player) {
-            $playersList[$player->getId()] = new GetPlayerListDto(
+        return array_map(
+            fn(Player $player) => new GetPlayerListDto(
                 $player->getId(),
                 $player->getName() . ' ' . $player->getSurname(),
                 $player->getPosition(),
                 $player->getTeam()->getId(),
-                $player->getTeam()->getTitle(),
-            );
-        }
-
-        return $playersList;
+                $player->getTeam()->getTitle()
+            ),
+            $this->playerRepository->findAll()
+        );
     }
 
-    public function getPlayerStatistic($id)
+    public function getPlayerStatistic($id): GetPlayerStatisticDto
     {
-//        $player = $this->playerRepository->find($id);
-//        $playerStatistic = [];
-////        $playerStatistic[$player->getId()] = new GetPlayerStatisticDto(
-////
-////        )Надо это доделать!!!
-        
+
+        return new GetPlayerStatisticDto(
+            $this->goalRepository->getPlayerGoalQuantity($id),
+            $this->goalRepository->getPlayerGoalQuantity($id) - $this->goalRepository->getPlayerGoalTypeQuantity($id,3),
+            $this->goalRepository->getPlayerGoalTypeQuantity($id,3),
+            $this->assistRepository->getPlayerAssistQuantity($id)
+        );
     }
 }

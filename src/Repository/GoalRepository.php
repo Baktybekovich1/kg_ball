@@ -16,28 +16,20 @@ class GoalRepository extends ServiceEntityRepository
         parent::__construct($registry, Goal::class);
     }
 
-//    /**
-//     * @return Goal[] Returns an array of Goal objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('g.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function getPlayerGoalQuantity(int $player_id): ?int
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "SELECT COUNT(*) FROM goal g LEFT JOIN player p ON g.player_id = p.id WHERE g.player_id = :player_id";
+        $result = $conn->executeQuery($sql, ['player_id' => $player_id]);
+        return $result->fetchOne();
+    }
 
-//    public function findOneBySomeField($value): ?Goal
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function getPlayerGoalTypeQuantity(int $player_id,int $typeOfGoal): ?int
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "SELECT COUNT(*) FROM goal g LEFT JOIN player p ON g.player_id = p.id WHERE g.player_id = :player_id AND g.type_of_goal_id = :type_of_goal_id ";
+        $result = $conn->executeQuery($sql, ['player_id' => $player_id, 'type_of_goal_id' => $typeOfGoal]);
+        return $result->fetchOne();
+
+    }
 }

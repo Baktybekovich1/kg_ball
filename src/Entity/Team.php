@@ -48,6 +48,12 @@ class Team
     #[ORM\OneToMany(targetEntity: Assist::class, mappedBy: 'team')]
     private Collection $assists;
 
+    /**
+     * @var Collection<int, TeamAward>
+     */
+    #[ORM\OneToMany(targetEntity: TeamAward::class, mappedBy: 'team')]
+    private Collection $teamAwards;
+
     public function __toString(): string
     {
         return $this->title ?? 'Unnamed Team';
@@ -58,6 +64,7 @@ class Team
         $this->games = new ArrayCollection();
         $this->goals = new ArrayCollection();
         $this->assists = new ArrayCollection();
+        $this->teamAwards = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -203,6 +210,36 @@ class Team
             // set the owning side to null (unless already changed)
             if ($assist->getTeam() === $this) {
                 $assist->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TeamAward>
+     */
+    public function getTeamAwards(): Collection
+    {
+        return $this->teamAwards;
+    }
+
+    public function addTeamAward(TeamAward $teamAward): static
+    {
+        if (!$this->teamAwards->contains($teamAward)) {
+            $this->teamAwards->add($teamAward);
+            $teamAward->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeamAward(TeamAward $teamAward): static
+    {
+        if ($this->teamAwards->removeElement($teamAward)) {
+            // set the owning side to null (unless already changed)
+            if ($teamAward->getTeam() === $this) {
+                $teamAward->setTeam(null);
             }
         }
 

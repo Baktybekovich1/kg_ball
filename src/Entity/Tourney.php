@@ -35,6 +35,12 @@ class Tourney
     #[ORM\OneToMany(targetEntity: Game::class, mappedBy: 'tourney')]
     private Collection $games;
 
+    /**
+     * @var Collection<int, TeamAward>
+     */
+    #[ORM\OneToMany(targetEntity: TeamAward::class, mappedBy: 'turney')]
+    private Collection $teamAwards;
+
     public function __toString(): string
     {
         return $this->title ?? 'Unnamed Team';
@@ -42,6 +48,7 @@ class Tourney
     public function __construct()
     {
         $this->games = new ArrayCollection();
+        $this->teamAwards = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -121,6 +128,36 @@ class Tourney
             // set the owning side to null (unless already changed)
             if ($game->getTourney() === $this) {
                 $game->setTourney(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TeamAward>
+     */
+    public function getTeamAwards(): Collection
+    {
+        return $this->teamAwards;
+    }
+
+    public function addTeamAward(TeamAward $teamAward): static
+    {
+        if (!$this->teamAwards->contains($teamAward)) {
+            $this->teamAwards->add($teamAward);
+            $teamAward->setTurney($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeamAward(TeamAward $teamAward): static
+    {
+        if ($this->teamAwards->removeElement($teamAward)) {
+            // set the owning side to null (unless already changed)
+            if ($teamAward->getTurney() === $this) {
+                $teamAward->setTurney(null);
             }
         }
 
