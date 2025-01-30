@@ -38,8 +38,15 @@ class Goal
 
     public function __toString(): string
     {
-        return $this->player->getName() ?? 'Unnamed Goal Author';
+        return
+            $this->player->getName() . ' ' .
+            $this->getGame()->getHomeTeam()->getTitle() . ' VS ' .
+            $this->getGame()->getAwayTeam()->getTitle() . ' ' .
+            $this->getTypeOfGoal()->getName() . ' in ' .
+            $this->getGame()->getTourney()->getTitle()
+            ?? 'Unnamed Goal Author';
     }
+
     public function __construct()
     {
         $this->assists = new ArrayCollection();

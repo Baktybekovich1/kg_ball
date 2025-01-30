@@ -9,13 +9,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-class GetPlayersController extends AbstractController
+class GetPlayerController extends AbstractController
 {
-    public function __construct(private GetPlayerService $getPlayerService, private PlayerRepository $playerRepository)
+    public function __construct(private readonly GetPlayerService $getPlayerService)
     {
     }
 
-    #[Route('/player/personal_card/{id}', name: 'player_personal_cards')]
+    /* Здесь Get запросы по Игрокам (Player) перед путём каждого Route есть префикс /player;*/
+    #[Route('/personal_card/{id}', name: 'player_personal_cards')]
     public function personal_card(Request $request): JsonResponse
     {
         return $this->json(['player' => $this
@@ -23,7 +24,7 @@ class GetPlayersController extends AbstractController
             ->GetPlayersPersonalCard($request->get('id'))]);
     }
 
-    #[Route('/players/list', name: 'players_list')]
+    #[Route('/list', name: 'players_list')]
     public function players_list(Request $request): JsonResponse
     {
         return $this->json(['players' => $this
@@ -31,7 +32,7 @@ class GetPlayersController extends AbstractController
             ->getPlayersList()]);
     }
 
-    #[Route('/player/statistic/{id}', name: 'player_statistic')]
+    #[Route('/statistic/{id}', name: 'player_statistic')]
     public function player_statistic(Request $request): JsonResponse
     {
         return $this->json(['player' => $this

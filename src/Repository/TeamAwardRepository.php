@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Team;
 use App\Entity\TeamAward;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,28 +17,11 @@ class TeamAwardRepository extends ServiceEntityRepository
         parent::__construct($registry, TeamAward::class);
     }
 
-    //    /**
-    //     * @return TeamAward[] Returns an array of TeamAward objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('t.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?TeamAward
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function getQuantityOfAward(int $teamId, int $awardId): ?int
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "SELECT COUNT(*) FROM team_award WHERE team_id = :team_id AND award_for_team_id = :award_id";
+        $result = $conn->executeQuery($sql, ['team_id' => $teamId, 'award_id' => $awardId]);
+        return $result->fetchOne();
+    }
 }

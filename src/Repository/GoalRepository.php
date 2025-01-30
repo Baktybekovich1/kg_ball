@@ -24,7 +24,7 @@ class GoalRepository extends ServiceEntityRepository
         return $result->fetchOne();
     }
 
-    public function getPlayerGoalTypeQuantity(int $player_id,int $typeOfGoal): ?int
+    public function getPlayerGoalTypeQuantity(int $player_id, int $typeOfGoal): ?int
     {
         $conn = $this->getEntityManager()->getConnection();
         $sql = "SELECT COUNT(*) FROM goal g LEFT JOIN player p ON g.player_id = p.id WHERE g.player_id = :player_id AND g.type_of_goal_id = :type_of_goal_id ";
@@ -32,4 +32,29 @@ class GoalRepository extends ServiceEntityRepository
         return $result->fetchOne();
 
     }
+
+    public function getTeamGoalQuantity(int $team_id): ?int
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "SELECT COUNT(*) FROM goal g LEFT JOIN team t ON g.team_id = t.id WHERE g.team_id = :team_id";
+        $result = $conn->executeQuery($sql, ['team_id' => $team_id]);
+        return $result->fetchOne();
+    }
+    public function getTeamGoalInGameQuantity(int $team_id,int $game_id): ?int
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "SELECT COUNT(*) FROM goal g LEFT JOIN team t ON g.team_id = t.id WHERE g.team_id = :team_id AND g.game_id = :game_id";
+        $result = $conn->executeQuery($sql, ['team_id' => $team_id, 'game_id' => $game_id]);
+        return $result->fetchOne();
+    }
+
+    public function getTeamGoalTypeQuantity(int $team_id, int $typeOfGoal): ?int
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "SELECT COUNT(*) FROM goal g LEFT JOIN team p ON g.team_id = p.id WHERE g.team_id = :team_id AND g.type_of_goal_id = :type_of_goal_id ";
+        $result = $conn->executeQuery($sql, ['team_id' => $team_id, 'type_of_goal_id' => $typeOfGoal]);
+        return $result->fetchOne();
+    }
+
+
 }
