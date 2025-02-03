@@ -24,15 +24,12 @@ class Goal
     #[ORM\ManyToOne(inversedBy: 'goals')]
     private ?Game $game = null;
 
-    #[ORM\ManyToOne(inversedBy: 'goals')]
+    #[ORM\ManyToOne( targetEntity: Team::class, inversedBy: 'goals')]
     private ?Team $team = null;
 
     #[ORM\ManyToOne(inversedBy: 'goals')]
     private ?TypeOfGoal $typeOfGoal = null;
 
-    /**
-     * @var Collection<int, Assist>
-     */
     #[ORM\OneToMany(targetEntity: Assist::class, mappedBy: 'goal')]
     private Collection $assists;
 

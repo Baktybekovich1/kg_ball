@@ -20,9 +20,6 @@ class AwardForTeam
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    /**
-     * @var Collection<int, TeamAward>
-     */
     #[ORM\OneToMany(targetEntity: TeamAward::class, mappedBy: 'awardForTeam')]
     private Collection $teamAwards;
 
@@ -54,9 +51,6 @@ class AwardForTeam
         return $this;
     }
 
-    /**
-     * @return Collection<int, TeamAward>
-     */
     public function getTeamAwards(): Collection
     {
         return $this->teamAwards;

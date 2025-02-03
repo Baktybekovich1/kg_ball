@@ -2,6 +2,7 @@
 
 namespace App\Service\Team;
 
+use App\Dto\Player\GetPlayerGoalAndAssist;
 use App\Dto\Team\GetTeamGameInfoDto;
 use App\Dto\Team\GetTeamGameListDto;
 use App\Dto\Team\GetTeamNameAndGoalTotalInGame;
@@ -61,7 +62,7 @@ readonly class GetTeamService
 
     }
 
-    public function getGameList($id)
+    public function getGameList($id): array
     {
         $games = $this->gameRepository->GetTeamAllGames($id);
         return array_map(fn($game) => new GetTeamGameListDto(
@@ -69,7 +70,7 @@ readonly class GetTeamService
             (array)new GetTeamNameAndGoalTotalInGame(
                 $game->getHomeTeam()->getId(),
                 $game->getHomeTeam()->getTitle(),
-                $this->goalRepository->getTeamGoalInGameQuantity( $game->getHomeTeam()->getId(), $game->getId())
+                $this->goalRepository->getTeamGoalInGameQuantity($game->getHomeTeam()->getId(), $game->getId())
             )
             , (array)new GetTeamNameAndGoalTotalInGame(
             $game->getAwayTeam()->getId(),
@@ -82,5 +83,27 @@ readonly class GetTeamService
                 $game->getTourney()->getDate()
             )),
             $games);
+    }
+
+    public function getBestPlayers(int $id)
+    {
+        $team = $this->teamRepository->find($id);
+        $players = $this->playerRepository->findBy(['team' => $team]);
+        $result = [];
+        foreach ($players as $player) {
+            $goals = $this->goalRepository->getPlayerGoalQuantity($player->getId());
+            $assists = $this->assistRepository->getPlayerAssistQuantity($player->getId());
+            if ($goals != 0 && $assists != 0) {
+                $result[] = new GetPlayerGoalAndAssist(
+                    $player->getId(),
+                    $player->getName() . ' ' . $player->getSurname(),
+                    $goals,
+                    $assists,
+                );
+            }
+        }
+        return $result;
+
+
     }
 }

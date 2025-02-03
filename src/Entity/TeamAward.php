@@ -15,16 +15,14 @@ class TeamAward
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'teamAwards')]
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'teamAwards')]
     private ?Team $team = null;
 
     #[ORM\ManyToOne(inversedBy: 'teamAwards')]
     private ?AwardForTeam $awardForTeam = null;
 
-    #[ORM\ManyToOne(inversedBy: 'teamAwards')]
+    #[ORM\ManyToOne(targetEntity: Tourney::class, inversedBy: 'teamAwards')]
     private ?Tourney $tourney = null;
-
-
 
 
     public function getId(): ?int

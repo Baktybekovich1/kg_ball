@@ -26,7 +26,7 @@ class AssistRepository extends ServiceEntityRepository
     public function getTeamAssistQuantity(int $team_id): ?int
     {
         $conn = $this->getEntityManager()->getConnection();
-        $sql = "SELECT COUNT(*) FROM assist g LEFT JOIN team t ON g.team_id = t.id WHERE g.team_id = :team_id";
+        $sql = "SELECT COUNT(*) FROM assist g WHERE g.team_id = :team_id";
         $result = $conn->executeQuery($sql, ['team_id' => $team_id]);
         return $result->fetchOne();
     }

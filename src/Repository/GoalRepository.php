@@ -43,7 +43,7 @@ class GoalRepository extends ServiceEntityRepository
     public function getTeamGoalInGameQuantity(int $team_id,int $game_id): ?int
     {
         $conn = $this->getEntityManager()->getConnection();
-        $sql = "SELECT COUNT(*) FROM goal g LEFT JOIN team t ON g.team_id = t.id WHERE g.team_id = :team_id AND g.game_id = :game_id";
+        $sql = "SELECT COUNT(*) FROM goal g WHERE g.team_id = :team_id AND g.game_id = :game_id";
         $result = $conn->executeQuery($sql, ['team_id' => $team_id, 'game_id' => $game_id]);
         return $result->fetchOne();
     }

@@ -29,16 +29,12 @@ class Tourney
     #[ORM\Column]
     private ?int $year = null;
 
-    /**
-     * @var Collection<int, Game>
-     */
+
     #[ORM\OneToMany(targetEntity: Game::class, mappedBy: 'tourney')]
     private Collection $games;
 
-    /**
-     * @var Collection<int, TeamAward>
-     */
-    #[ORM\OneToMany(targetEntity: TeamAward::class, mappedBy: 'turney')]
+
+    #[ORM\OneToMany(targetEntity: TeamAward::class, mappedBy: 'tourney')]
     private Collection $teamAwards;
 
     public function __toString(): string

@@ -23,7 +23,7 @@ class Player
     #[ORM\Column(length: 255)]
     private ?string $surname = null;
 
-    #[ORM\ManyToOne(inversedBy: 'players')]
+    #[ORM\ManyToOne(targetEntity: Team::class,inversedBy: 'players')]
     private ?Team $team = null;
 
     #[ORM\Column(length: 255)]

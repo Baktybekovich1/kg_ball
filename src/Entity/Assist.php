@@ -21,7 +21,7 @@ class Assist
     #[ORM\ManyToOne(inversedBy: 'assists')]
     private ?Goal $goal = null;
 
-    #[ORM\ManyToOne(inversedBy: 'assists')]
+    #[ORM\ManyToOne( targetEntity: Team::class,inversedBy: 'assists')]
     private ?Team $team = null;
 
     public function getId(): ?int

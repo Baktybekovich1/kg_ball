@@ -20,9 +20,6 @@ class TypeOfGoal
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    /**
-     * @var Collection<int, Goal>
-     */
     #[ORM\OneToMany(targetEntity: Goal::class, mappedBy: 'typeOfGoal')]
     private Collection $goals;
 

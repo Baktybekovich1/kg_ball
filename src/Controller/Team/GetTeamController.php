@@ -42,11 +42,11 @@ class GetTeamController extends AbstractController
         return $this->json(['games' => $this->getTeamService->getGameList($request->get('id'))]);
     }
 
-    //Сделать best players
-    //    #[Route('/game_list/{id}', name: 'app_team_game_list', methods: ['GET'])]
-//    public function team_game_list(Request $request): JsonResponse
-//    {
-//        return $this->json(['games' => $this->getTeamService->getGameList($request->get('id'))]);
-//    }
+
+        #[Route('/best_players/{id}', name: 'app_team_best_players', methods: ['GET'])]
+    public function team_best_players(Request $request): JsonResponse
+    {
+        return $this->json(['players'=> $this->getTeamService->getBestPlayers($request->get('id'))]);
+    }
 
 }

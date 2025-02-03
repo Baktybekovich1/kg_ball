@@ -17,10 +17,10 @@ class Game
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'games')]
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'games')]
     private ?Team $homeTeam = null;
 
-    #[ORM\ManyToOne(inversedBy: 'games')]
+    #[ORM\ManyToOne(targetEntity: Team::class,inversedBy: 'games')]
     private ?Team $awayTeam = null;
 
     #[ORM\ManyToOne(inversedBy: 'games')]
@@ -42,18 +42,6 @@ class Game
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTeam(): ?Team
-    {
-        return $this->homeTeam;
-    }
-
-    public function setTeam(?Team $team): static
-    {
-        $this->awayTeam = $team;
-
-        return $this;
     }
 
     public function getHomeTeam(): ?Team

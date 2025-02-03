@@ -24,33 +24,15 @@ class Team
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $logo = null;
 
-    /**
-     * @var Collection<int, Player>
-     */
     #[ORM\OneToMany(targetEntity: Player::class, mappedBy: 'team')]
     private Collection $players;
 
-    /**
-     * @var Collection<int, Game>
-     */
-    #[ORM\OneToMany(targetEntity: Game::class, mappedBy: 'team')]
-    private Collection $games;
-
-    /**
-     * @var Collection<int, Goal>
-     */
     #[ORM\OneToMany(targetEntity: Goal::class, mappedBy: 'team')]
     private Collection $goals;
 
-    /**
-     * @var Collection<int, Assist>
-     */
     #[ORM\OneToMany(targetEntity: Assist::class, mappedBy: 'team')]
     private Collection $assists;
 
-    /**
-     * @var Collection<int, TeamAward>
-     */
     #[ORM\OneToMany(targetEntity: TeamAward::class, mappedBy: 'team')]
     private Collection $teamAwards;
 
@@ -58,10 +40,10 @@ class Team
     {
         return $this->title ?? 'Unnamed Team';
     }
+
     public function __construct()
     {
         $this->players = new ArrayCollection();
-        $this->games = new ArrayCollection();
         $this->goals = new ArrayCollection();
         $this->assists = new ArrayCollection();
         $this->teamAwards = new ArrayCollection();
@@ -96,9 +78,7 @@ class Team
         return $this;
     }
 
-    /**
-     * @return Collection<int, Player>
-     */
+
     public function getPlayers(): Collection
     {
         return $this->players;
@@ -126,39 +106,7 @@ class Team
         return $this;
     }
 
-    /**
-     * @return Collection<int, Game>
-     */
-    public function getGames(): Collection
-    {
-        return $this->games;
-    }
 
-    public function addGame(Game $game): static
-    {
-        if (!$this->games->contains($game)) {
-            $this->games->add($game);
-            $game->setTeam($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGame(Game $game): static
-    {
-        if ($this->games->removeElement($game)) {
-            // set the owning side to null (unless already changed)
-            if ($game->getTeam() === $this) {
-                $game->setTeam(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Goal>
-     */
     public function getGoals(): Collection
     {
         return $this->goals;
