@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\TestPlayers;
+use App\Entity\TypeOfGoal;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<TestPlayers>
+ * @extends ServiceEntityRepository<TypeOfGoal>
  */
-class TestPlayersRepository extends ServiceEntityRepository
+class TypeOfGoalRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TestPlayers::class);
+        parent::__construct($registry, TypeOfGoal::class);
     }
 
     //    /**
-    //     * @return TestPlayers[] Returns an array of TestPlayers objects
+    //     * @return TypeOfGoal[] Returns an array of TypeOfGoal objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +31,7 @@ class TestPlayersRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?TestPlayers
+    //    public function findOneBySomeField($value): ?TypeOfGoal
     //    {
     //        return $this->createQueryBuilder('t')
     //            ->andWhere('t.exampleField = :val')

@@ -2,10 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\TourneyRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TourneyRepository::class)]
+#[ApiResource]
 class Tourney
 {
     #[ORM\Id]
@@ -24,6 +28,24 @@ class Tourney
 
     #[ORM\Column]
     private ?int $year = null;
+
+
+    #[ORM\OneToMany(targetEntity: Game::class, mappedBy: 'tourney')]
+    private Collection $games;
+
+
+    #[ORM\OneToMany(targetEntity: TeamAward::class, mappedBy: 'tourney')]
+    private Collection $teamAwards;
+
+    public function __toString(): string
+    {
+        return $this->title ?? 'Unnamed Team';
+    }
+    public function __construct()
+    {
+        $this->games = new ArrayCollection();
+        $this->teamAwards = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -74,6 +96,66 @@ class Tourney
     public function setYear(int $year): static
     {
         $this->year = $year;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Game>
+     */
+    public function getGames(): Collection
+    {
+        return $this->games;
+    }
+
+    public function addGame(Game $game): static
+    {
+        if (!$this->games->contains($game)) {
+            $this->games->add($game);
+            $game->setTourney($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGame(Game $game): static
+    {
+        if ($this->games->removeElement($game)) {
+            // set the owning side to null (unless already changed)
+            if ($game->getTourney() === $this) {
+                $game->setTourney(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TeamAward>
+     */
+    public function getTeamAwards(): Collection
+    {
+        return $this->teamAwards;
+    }
+
+    public function addTeamAward(TeamAward $teamAward): static
+    {
+        if (!$this->teamAwards->contains($teamAward)) {
+            $this->teamAwards->add($teamAward);
+            $teamAward->setTurney($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeamAward(TeamAward $teamAward): static
+    {
+        if ($this->teamAwards->removeElement($teamAward)) {
+            // set the owning side to null (unless already changed)
+            if ($teamAward->getTurney() === $this) {
+                $teamAward->setTurney(null);
+            }
+        }
 
         return $this;
     }
