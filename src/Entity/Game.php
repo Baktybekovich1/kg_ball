@@ -18,10 +18,10 @@ class Game
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'games')]
-    private ?Team $homeTeam = null;
+    private ?Team $winnerTeam = null;
 
     #[ORM\ManyToOne(targetEntity: Team::class,inversedBy: 'games')]
-    private ?Team $awayTeam = null;
+    private ?Team $loserTeam = null;
 
     #[ORM\ManyToOne(inversedBy: 'games')]
     private ?Tourney $tourney = null;
@@ -31,7 +31,7 @@ class Game
 
     public function __toString(): string
     {
-        return $this->homeTeam->getTitle() . 'VS' . $this->awayTeam->getTitle() . ' ' . $this->getTourney() . ' ' . $this->getTourney()->getDate() ?? 'Unnamed Team and opponent';
+        return $this->winnerTeam->getTitle() . 'VS' . $this->loserTeam->getTitle() . ' ' . $this->getTourney() . ' ' . $this->getTourney()->getDate() ?? 'Unnamed Team and opponent';
     }
 
     public function __construct()
@@ -44,24 +44,24 @@ class Game
         return $this->id;
     }
 
-    public function getHomeTeam(): ?Team
+    public function getWinnerTeam(): ?Team
     {
-        return $this->homeTeam;
+        return $this->winnerTeam;
     }
 
-    public function setHomeTeam(?Team $homeTeam): void
+    public function setWinnerTeam(?Team $winnerTeam): void
     {
-        $this->homeTeam = $homeTeam;
+        $this->winnerTeam = $winnerTeam;
     }
 
-    public function getAwayTeam(): ?Team
+    public function getLoserTeam(): ?Team
     {
-        return $this->awayTeam;
+        return $this->loserTeam;
     }
 
-    public function setAwayTeam(?Team $awayTeam): void
+    public function setLoserTeam(?Team $loserTeam): void
     {
-        $this->awayTeam = $awayTeam;
+        $this->loserTeam = $loserTeam;
     }
 
 

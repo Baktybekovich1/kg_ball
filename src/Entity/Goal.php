@@ -37,8 +37,8 @@ class Goal
     {
         return
             $this->player->getName() . ' ' .
-            $this->getGame()->getHomeTeam()->getTitle() . ' VS ' .
-            $this->getGame()->getAwayTeam()->getTitle() . ' ' .
+            $this->getGame()->getWinnerTeam()->getTitle() . ' VS ' .
+            $this->getGame()->getLoserTeam()->getTitle() . ' ' .
             $this->getTypeOfGoal()->getName() . ' in ' .
             $this->getGame()->getTourney()->getTitle()
             ?? 'Unnamed Goal Author';

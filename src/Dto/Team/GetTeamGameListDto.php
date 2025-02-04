@@ -6,8 +6,8 @@ class GetTeamGameListDto
 {
     public function __construct(
         public int $id,
-        public array $homeTeam,
-        public array $awayTeam,
+        public array $winnerTeam,
+        public array $loserTeam,
         public array $tourney,
     )
     {

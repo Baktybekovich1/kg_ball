@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class IndexController extends AbstractController
 {
+
     #[Route('/index', name: 'app_index')]
     public function index(): JsonResponse
     {
