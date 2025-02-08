@@ -37,6 +37,9 @@ class Tourney
     #[ORM\OneToMany(targetEntity: TeamAward::class, mappedBy: 'tourney')]
     private Collection $teamAwards;
 
+    #[ORM\OneToOne(mappedBy: 'tourney', cascade: ['persist', 'remove'])]
+    private ?TourneyTeamPrizes $tourneyTeamPrizes = null;
+
     public function __toString(): string
     {
         return $this->title ?? 'Unnamed Team';
@@ -142,7 +145,7 @@ class Tourney
     {
         if (!$this->teamAwards->contains($teamAward)) {
             $this->teamAwards->add($teamAward);
-            $teamAward->setTurney($this);
+            $teamAward->setTourney($this);
         }
 
         return $this;
@@ -152,10 +155,32 @@ class Tourney
     {
         if ($this->teamAwards->removeElement($teamAward)) {
             // set the owning side to null (unless already changed)
-            if ($teamAward->getTurney() === $this) {
-                $teamAward->setTurney(null);
+            if ($teamAward->getTourney() === $this) {
+                $teamAward->setTourney(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTourneyTeamPrizes(): ?TourneyTeamPrizes
+    {
+        return $this->tourneyTeamPrizes;
+    }
+
+    public function setTourneyTeamPrizes(?TourneyTeamPrizes $tourneyTeamPrizes): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($tourneyTeamPrizes === null && $this->tourneyTeamPrizes !== null) {
+            $this->tourneyTeamPrizes->setTourney(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($tourneyTeamPrizes !== null && $tourneyTeamPrizes->getTourney() !== $this) {
+            $tourneyTeamPrizes->setTourney($this);
+        }
+
+        $this->tourneyTeamPrizes = $tourneyTeamPrizes;
 
         return $this;
     }

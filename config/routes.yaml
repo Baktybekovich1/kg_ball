@@ -19,3 +19,8 @@ player_controllers:
   resource: ../src/Controller/Player
   prefix: /player
   type: attribute
+
+game_controllers:
+  resource: ../src/Controller/Game
+  prefix: /game
+  type: attribute

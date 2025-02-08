@@ -3,11 +3,15 @@
 namespace App\Service\Team;
 
 use App\Dto\Player\GetPlayerGoalAndAssist;
+use App\Dto\Player\GetPlayerNameAndAssists;
+use App\Dto\Player\GetPlayerNameAndGoals;
 use App\Dto\Team\GetTeamGameInfoDto;
 use App\Dto\Team\GetTeamGameListDto;
 use App\Dto\Team\GetTeamNameAndGoalTotalInGame;
 use App\Dto\Team\GetTeamProgressDto;
 use App\Dto\Team\GetTeamSquadListDto;
+use App\Dto\Team\GetTeamStatisticsDto;
+use App\Dto\Team\GetTwoTeamsDto;
 use App\Dto\Tourney\GetTourneyTitleAndDate;
 use App\Entity\Game;
 use App\Entity\Player;
@@ -103,7 +107,78 @@ readonly class GetTeamService
             }
         }
         return $result;
+    }
+
+    public function getGameStatistics(int $firstTeamId, int $secondTeamId)
+    {
+
+        return new GetTwoTeamsDto(
+            new GetTeamStatisticsDto(
+                $firstTeamId,
+                $this->gameRepository->GetTeamWinningsVSTeam($firstTeamId, $secondTeamId),
+                $this->goalRepository->getTeamGoalQuantityVSTeam($firstTeamId, $secondTeamId),
+                $this->assistRepository->getTeamAssistQuantityVSTeam($firstTeamId, $secondTeamId),
+                new GetPlayerNameAndGoals(
+                    $this->getTeamBombardier($firstTeamId, $secondTeamId)->getId(),
+                    $this->getTeamBombardier($firstTeamId, $secondTeamId)->getName(),
+                    count($this->getTeamBombardier($firstTeamId, $secondTeamId)->getGoals())
+                ),
+                new GetPlayerNameAndAssists(
+                    $this->getTeamAssistant($firstTeamId, $secondTeamId)->getId(),
+                    $this->getTeamAssistant($firstTeamId, $secondTeamId)->getName(),
+                    count($this->getTeamAssistant($firstTeamId, $secondTeamId)->getAssists())
+                )
+            ),
+            new GetTeamStatisticsDto(
+                $secondTeamId,
+                $this->gameRepository->GetTeamWinningsVSTeam($secondTeamId, $firstTeamId),
+                $this->goalRepository->getTeamGoalQuantityVSTeam($secondTeamId, $firstTeamId),
+                $this->assistRepository->getTeamAssistQuantityVSTeam($secondTeamId, $firstTeamId),
+                new GetPlayerNameAndGoals(
+                    $this->getTeamBombardier($secondTeamId, $firstTeamId)->getId(),
+                    $this->getTeamBombardier($secondTeamId, $firstTeamId)->getName(),
+                    count($this->getTeamBombardier($secondTeamId, $firstTeamId)->getGoals()),
+                ),
+                new GetPlayerNameAndAssists(
+                    $this->getTeamAssistant($secondTeamId, $firstTeamId)->getId(),
+                    $this->getTeamAssistant($secondTeamId, $firstTeamId)->getName(),
+                    count($this->getTeamAssistant($secondTeamId, $firstTeamId)->getAssists()),
+                )
+            )
+        );
 
 
     }
+
+    public function getTeamBombardier(int $team_id, int $vs_team_id)
+    {
+        $players = $this->playerRepository->findBy(['team' => $team_id]);
+        $bombardier = $players[array_rand($players)];
+        $b = 0;
+        foreach ($players as $player) {
+            $goals = $this->goalRepository->getPlayerGoalQuantityVSTeam($player->getId(), $vs_team_id);
+            if ($goals > $b) {
+                $b = $goals;
+                $bombardier = $player;
+            }
+        }
+        return $bombardier;
+    }
+
+    public function getTeamAssistant(int $team_id, int $vs_team_id)
+    {
+        $players = $this->playerRepository->findBy(['team' => $team_id]);
+        $assistant = $players[array_rand($players)];
+        $a = 0;
+        foreach ($players as $player) {
+            $assist = $this->assistRepository->getPlayerAssistQuantityVSTeam($player->getId(), $vs_team_id);
+            if ($assist > $a) {
+                $a = $assist;
+                $assistant = $player;
+            }
+        }
+        return $assistant;
+
+    }
+
 }

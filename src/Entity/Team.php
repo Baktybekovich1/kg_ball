@@ -36,6 +36,12 @@ class Team
     #[ORM\OneToMany(targetEntity: TeamAward::class, mappedBy: 'team')]
     private Collection $teamAwards;
 
+    /**
+     * @var Collection<int, TourneyTeamPrizes>
+     */
+    #[ORM\OneToMany(targetEntity: TourneyTeamPrizes::class, mappedBy: '–∞firstP—Position')]
+    private Collection $tourneyTeamPrizes;
+
     public function __toString(): string
     {
         return $this->title ?? 'Unnamed Team';
@@ -47,6 +53,7 @@ class Team
         $this->goals = new ArrayCollection();
         $this->assists = new ArrayCollection();
         $this->teamAwards = new ArrayCollection();
+        $this->tourneyTeamPrizes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -188,6 +195,36 @@ class Team
             // set the owning side to null (unless already changed)
             if ($teamAward->getTeam() === $this) {
                 $teamAward->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TourneyTeamPrizes>
+     */
+    public function getTourneyTeamPrizes(): Collection
+    {
+        return $this->tourneyTeamPrizes;
+    }
+
+    public function addTourneyTeamPrize(TourneyTeamPrizes $tourneyTeamPrize): static
+    {
+        if (!$this->tourneyTeamPrizes->contains($tourneyTeamPrize)) {
+            $this->tourneyTeamPrizes->add($tourneyTeamPrize);
+            $tourneyTeamPrize->set–∞firstP—Position($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTourneyTeamPrize(TourneyTeamPrizes $tourneyTeamPrize): static
+    {
+        if ($this->tourneyTeamPrizes->removeElement($tourneyTeamPrize)) {
+            // set the owning side to null (unless already changed)
+            if ($tourneyTeamPrize->get–∞firstP—Position() === $this) {
+                $tourneyTeamPrize->set–∞firstP—Position(null);
             }
         }
 

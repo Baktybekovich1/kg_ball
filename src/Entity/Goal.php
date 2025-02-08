@@ -24,14 +24,18 @@ class Goal
     #[ORM\ManyToOne(inversedBy: 'goals')]
     private ?Game $game = null;
 
-    #[ORM\ManyToOne( targetEntity: Team::class, inversedBy: 'goals')]
+    #[ORM\OneToOne(targetEntity: Assist::class, mappedBy: 'goal', cascade: ['persist', 'remove'])]
+    private ?Assist $assist = null;
+
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'goals')]
     private ?Team $team = null;
+
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'goals')]
+    private ?Team $vs_team = null;
 
     #[ORM\ManyToOne(inversedBy: 'goals')]
     private ?TypeOfGoal $typeOfGoal = null;
 
-    #[ORM\OneToMany(targetEntity: Assist::class, mappedBy: 'goal')]
-    private Collection $assists;
 
     public function __toString(): string
     {
@@ -42,11 +46,6 @@ class Goal
             $this->getTypeOfGoal()->getName() . ' in ' .
             $this->getGame()->getTourney()->getTitle()
             ?? 'Unnamed Goal Author';
-    }
-
-    public function __construct()
-    {
-        $this->assists = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -74,21 +73,20 @@ class Goal
     public function setGame(?Game $game): static
     {
         $this->game = $game;
+        $this->team = $this->getPlayer()->getTeam();
+        $a = $this->getGame()->getWinnerTeam();
+        $b = $this->getGame()->getLoserTeam();
+        if ($a === $this->getPlayer()->getTeam()) {
+            $this->team = $this->getPlayer()->getTeam();
+            $this->vs_team = $this->getGame()->getLoserTeam();
+        } else {
+            $this->team = $this->getPlayer()->getTeam();
+            $this->vs_team = $this->getGame()->getWinnerTeam();
+        }
 
         return $this;
     }
 
-    public function getTeam(): ?Team
-    {
-        return $this->team;
-    }
-
-    public function setTeam(?Team $team): static
-    {
-        $this->team = $team;
-
-        return $this;
-    }
 
     public function getTypeOfGoal(): ?TypeOfGoal
     {
@@ -102,33 +100,32 @@ class Goal
         return $this;
     }
 
-    /**
-     * @return Collection<int, Assist>
-     */
-    public function getAssists(): Collection
+    public function getAssist(): ?Assist
     {
-        return $this->assists;
+        return $this->assist;
     }
 
-    public function addAssist(Assist $assist): static
+    public function setAssist(?Assist $assist): static
     {
-        if (!$this->assists->contains($assist)) {
-            $this->assists->add($assist);
+        // Устанавливаем связь в обеих сторонах
+        if ($assist !== null && $assist->getGoal() !== $this) {
             $assist->setGoal($this);
         }
 
+        $this->assist = $assist;
+
         return $this;
     }
 
-    public function removeAssist(Assist $assist): static
+    public function getVsTeam(): ?Team
     {
-        if ($this->assists->removeElement($assist)) {
-            // set the owning side to null (unless already changed)
-            if ($assist->getGoal() === $this) {
-                $assist->setGoal(null);
-            }
-        }
-
-        return $this;
+        return $this->vs_team;
     }
+
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+
 }
