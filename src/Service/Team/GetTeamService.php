@@ -150,7 +150,7 @@ readonly class GetTeamService
 
     }
 
-    public function getTeamBombardier(int $team_id, int $vs_team_id)
+    private function getTeamBombardier(int $team_id, int $vs_team_id)
     {
         $players = $this->playerRepository->findBy(['team' => $team_id]);
         $bombardier = $players[array_rand($players)];
@@ -165,7 +165,7 @@ readonly class GetTeamService
         return $bombardier;
     }
 
-    public function getTeamAssistant(int $team_id, int $vs_team_id)
+    private function getTeamAssistant(int $team_id, int $vs_team_id)
     {
         $players = $this->playerRepository->findBy(['team' => $team_id]);
         $assistant = $players[array_rand($players)];
