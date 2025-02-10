@@ -24,12 +24,40 @@ class AssistRepository extends ServiceEntityRepository
         return $result->fetchOne();
     }
 
+    public function getPlayerAssistQuantityInTourney(int $player_id, int $tourney_id): ?int
+    {
+        $qb = $this->createQueryBuilder('assist');
+        $qb->select('COUNT(assist.id)')
+            ->leftJoin('assist.goal', 'goal')
+            ->leftJoin('goal.game', 'game')
+            ->where('game.tourney = :tourney_id')
+            ->andWhere('assist.player = :player_id')
+            ->setParameter('tourney_id', $tourney_id)
+            ->setParameter('player_id', $player_id);
+        return $qb->getQuery()->getSingleScalarResult();
+        
+    }
+
     public function getTeamAssistQuantity(int $team_id): ?int
     {
         $conn = $this->getEntityManager()->getConnection();
         $sql = "SELECT COUNT(*) FROM assist g WHERE g.team_id = :team_id";
         $result = $conn->executeQuery($sql, ['team_id' => $team_id]);
         return $result->fetchOne();
+    }
+
+    public function getTeamAssistQuantityInTourney(int $team_id, int $tourney_id): ?int
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb->select('count(a.id)')
+            ->leftJoin('a.goal', 'goal')
+            ->leftJoin('goal.game', 'game')
+            ->andWhere('game.tourney = :tourney_id')
+            ->andWhere('goal.team = :team_id')
+            ->setParameter('tourney_id', $tourney_id)
+            ->setParameter('team_id', $team_id);
+        return $qb->getQuery()->getSingleScalarResult();
+
     }
 
     public function getTeamAssistQuantityVSTeam(int $first_team_id, int $second_team_id): ?int
@@ -54,5 +82,17 @@ class AssistRepository extends ServiceEntityRepository
         $qb->setParameter('vs_team_id', $vs_team_id);
         $result = $qb->getQuery()->getSingleScalarResult();
         return $result;
+    }
+
+    public function getAllAssistsQuantityInTourney(int $tourney_id): ?int
+    {
+        $qb = $this->createQueryBuilder('assist');
+        $qb->select('count(assist.id)')
+            ->leftJoin('assist.goal', 'goal')
+            ->leftJoin('goal.game', 'game')
+            ->where('game.tourney = :tourney_id')
+            ->setParameter('tourney_id', $tourney_id);
+        return $qb->getQuery()->getSingleScalarResult();
+
     }
 }
