@@ -12,10 +12,10 @@ use App\Repository\GoalRepository;
 use App\Repository\PlayerRepository;
 use App\Repository\TourneyRepository;
 
-class GetTourneyService
+readonly class GetTourneyService
 {
     public function __construct(
-        private readonly TourneyRepository $tourneyRepository, private readonly GoalRepository $goalRepository, private readonly AssistRepository $assistRepository, private readonly PlayerRepository $playerRepository
+        private TourneyRepository $tourneyRepository, private GoalRepository $goalRepository, private AssistRepository $assistRepository, private PlayerRepository $playerRepository
     )
     {
     }
