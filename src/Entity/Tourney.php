@@ -40,6 +40,9 @@ class Tourney
     #[ORM\OneToOne(mappedBy: 'tourney', cascade: ['persist', 'remove'])]
     private ?TourneyTeamPrizes $tourneyTeamPrizes = null;
 
+    #[ORM\ManyToOne(inversedBy: 'tourneys')]
+    private ?Liga $liga = null;
+
     public function __toString(): string
     {
         return $this->title ?? 'Unnamed Team';
@@ -181,6 +184,18 @@ class Tourney
         }
 
         $this->tourneyTeamPrizes = $tourneyTeamPrizes;
+
+        return $this;
+    }
+
+    public function getLiga(): ?Liga
+    {
+        return $this->liga;
+    }
+
+    public function setLiga(?Liga $liga): static
+    {
+        $this->liga = $liga;
 
         return $this;
     }

@@ -42,6 +42,9 @@ class Team
     #[ORM\OneToMany(targetEntity: TourneyTeamPrizes::class, mappedBy: 'Ğ°firstPÑPosition')]
     private Collection $tourneyTeamPrizes;
 
+    #[ORM\ManyToOne(inversedBy: 'teams')]
+    private ?Liga $liga = null;
+
     public function __toString(): string
     {
         return $this->title ?? 'Unnamed Team';
@@ -227,6 +230,18 @@ class Team
                 $tourneyTeamPrize->setĞ°firstPÑPosition(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLiga(): ?Liga
+    {
+        return $this->liga;
+    }
+
+    public function setLiga(?Liga $liga): static
+    {
+        $this->liga = $liga;
 
         return $this;
     }
