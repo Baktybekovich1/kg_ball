@@ -34,7 +34,6 @@ class GetGameController extends AbstractController
     #[Route('/goals/{id}', name: 'app_game_goals', methods: ['GET'])]
     public function index(Request $request): JsonResponse
     {
-
         return $this->json($this->getGameService->getGameGoals($request->get('id')));
     }
 
