@@ -24,15 +24,11 @@ class Liga
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    /**
-     * @var Collection<int, Tourney>
-     */
+
     #[ORM\OneToMany(targetEntity: Tourney::class, mappedBy: 'liga')]
     private Collection $tourneys;
 
-    /**
-     * @var Collection<int, Team>
-     */
+
     #[ORM\OneToMany(targetEntity: Team::class, mappedBy: 'liga')]
     private Collection $teams;
 

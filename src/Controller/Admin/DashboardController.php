@@ -6,6 +6,7 @@ use App\Entity\Assist;
 use App\Entity\AwardForTeam;
 use App\Entity\Game;
 use App\Entity\Goal;
+use App\Entity\Liga;
 use App\Entity\Player;
 use App\Entity\Team;
 use App\Entity\TeamAward;
@@ -51,6 +52,7 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
+        yield MenuItem::linkToCrud('Liga', 'fas fa-shield', Liga::class);
         yield MenuItem::linkToCrud('Team', 'fas fa-shield', Team::class);
         yield MenuItem::linkToCrud('Player', 'fas fa-user', Player::class);
         yield MenuItem::linkToCrud('Tourney', 'fas fa-medal', Tourney::class);
