@@ -49,9 +49,6 @@ class TypeOfGoal
         return $this;
     }
 
-    /**
-     * @return Collection<int, Goal>
-     */
     public function getGoals(): Collection
     {
         return $this->goals;
