@@ -121,10 +121,7 @@ class Team
         return $this->assists;
     }
 
-    public function getTeamAwards(): Collection
-    {
-        return $this->teamAwards;
-    }
+
 
     public function getTourneyTeamPrizes(): Collection
     {
