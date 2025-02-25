@@ -16,11 +16,13 @@ services:
     build:
       context: nginx
     container_name: ${NGINX_CONTAINER_NAME}
+    env_file: .env
     depends_on:
       - php
     volumes:
       - ../:/app:cached
-      - "./nginx/conf.d.prod:/etc/nginx/conf.d"
+      - certs:/etc/letsencrypt
+#      - "./nginx/conf.d.prod:/etc/nginx/conf.d"
 #      - ./certbot/conf:/etc/letsencrypt
 #      - ./certbot/www:/var/www/certbot
     ports:
@@ -40,3 +42,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASS}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_DB: ${DB_NAME}
+
+
+volumes:
+  certs:
