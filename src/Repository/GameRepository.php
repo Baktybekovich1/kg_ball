@@ -28,11 +28,22 @@ class GameRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('g');
 
-        $qb->where('g.homeTeam = :teamId')
-            ->orWhere('g.awayTeam = :teamId')
+        $qb->where('g.winnerTeam = :teamId')
+            ->orWhere('g.loserTeam = :teamId')
             ->setParameter('teamId', $teamId);
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function GetTeamWinningsVSTeam(int $firstTeamId, int $secondTeamId): ?int
+    {
+        $qb = $this->createQueryBuilder('g');
+        $qb->select('COUNT(g.id)')
+            ->where('g.winnerTeam = :firstTeamId')
+            ->andWhere('g.loserTeam = :secondTeamId')
+            ->setParameter('firstTeamId', $firstTeamId)
+            ->setParameter('secondTeamId', $secondTeamId);
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
 }

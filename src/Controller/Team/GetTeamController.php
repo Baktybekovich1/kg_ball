@@ -8,6 +8,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
+use OpenApi\Attributes as OA;
+
+#[OA\Tag(name:'Get api for Team')]
 class GetTeamController extends AbstractController
 {
     public function __construct(
@@ -43,10 +46,17 @@ class GetTeamController extends AbstractController
     }
 
 
-        #[Route('/best_players/{id}', name: 'app_team_best_players', methods: ['GET'])]
+    # Лучшие игроки команды 
+    #[Route('/best_players/{id}', name: 'app_team_best_players', methods: ['GET'])]
     public function team_best_players(Request $request): JsonResponse
     {
-        return $this->json(['players'=> $this->getTeamService->getBestPlayers($request->get('id'))]);
+        return $this->json(['players' => $this->getTeamService->getBestPlayers($request->get('id'))]);
+    }
+
+    #[Route('/game_statistics/{firstTeamId}/{secondTeamId}', name: 'app_team_game_statistics', methods: ['GET'])]
+    public function index(Request $request): JsonResponse
+    {
+        return $this->json($this->getTeamService->getGameStatistics($request->get('firstTeamId'), $request->get('secondTeamId')));
     }
 
 }

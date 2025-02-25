@@ -34,8 +34,11 @@ class Tourney
     private Collection $games;
 
 
-    #[ORM\OneToMany(targetEntity: TeamAward::class, mappedBy: 'tourney')]
-    private Collection $teamAwards;
+    #[ORM\OneToOne(mappedBy: 'tourney', cascade: ['persist', 'remove'])]
+    private ?TourneyTeamPrizes $tourneyTeamPrizes = null;
+
+    #[ORM\ManyToOne(inversedBy: 'tourneys')]
+    private ?Liga $liga = null;
 
     public function __toString(): string
     {
@@ -44,7 +47,6 @@ class Tourney
     public function __construct()
     {
         $this->games = new ArrayCollection();
-        $this->teamAwards = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -130,32 +132,36 @@ class Tourney
         return $this;
     }
 
-    /**
-     * @return Collection<int, TeamAward>
-     */
-    public function getTeamAwards(): Collection
+    public function getTourneyTeamPrizes(): ?TourneyTeamPrizes
     {
-        return $this->teamAwards;
+        return $this->tourneyTeamPrizes;
     }
 
-    public function addTeamAward(TeamAward $teamAward): static
+    public function setTourneyTeamPrizes(?TourneyTeamPrizes $tourneyTeamPrizes): static
     {
-        if (!$this->teamAwards->contains($teamAward)) {
-            $this->teamAwards->add($teamAward);
-            $teamAward->setTurney($this);
+        // unset the owning side of the relation if necessary
+        if ($tourneyTeamPrizes === null && $this->tourneyTeamPrizes !== null) {
+            $this->tourneyTeamPrizes->setTourney(null);
         }
+
+        // set the owning side of the relation if necessary
+        if ($tourneyTeamPrizes !== null && $tourneyTeamPrizes->getTourney() !== $this) {
+            $tourneyTeamPrizes->setTourney($this);
+        }
+
+        $this->tourneyTeamPrizes = $tourneyTeamPrizes;
 
         return $this;
     }
 
-    public function removeTeamAward(TeamAward $teamAward): static
+    public function getLiga(): ?Liga
     {
-        if ($this->teamAwards->removeElement($teamAward)) {
-            // set the owning side to null (unless already changed)
-            if ($teamAward->getTurney() === $this) {
-                $teamAward->setTurney(null);
-            }
-        }
+        return $this->liga;
+    }
+
+    public function setLiga(?Liga $liga): static
+    {
+        $this->liga = $liga;
 
         return $this;
     }

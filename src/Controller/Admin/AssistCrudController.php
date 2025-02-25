@@ -21,8 +21,7 @@ class AssistCrudController extends AbstractCrudController
     {
         return [
             AssociationField::new('player')->renderAsNativeWidget(),
-            AssociationField::new('goal')->renderAsNativeWidget(),
-            AssociationField::new('team')->renderAsNativeWidget(),
+            AssociationField::new('goal')->renderAsNativeWidget()
         ];
     }
 

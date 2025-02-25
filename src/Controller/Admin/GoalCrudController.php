@@ -21,7 +21,6 @@ class GoalCrudController extends AbstractCrudController
         return [
             AssociationField::new('player', 'Игрок')->renderAsNativeWidget(),
             AssociationField::new('game', 'Матч')->renderAsNativeWidget(),
-            AssociationField::new('team', 'За команду')->renderAsNativeWidget(),
             AssociationField::new('typeOfGoal', 'Вид гола')->renderAsNativeWidget(),
         ];
     }

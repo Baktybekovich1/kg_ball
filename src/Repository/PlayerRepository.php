@@ -16,5 +16,52 @@ class PlayerRepository extends ServiceEntityRepository
         parent::__construct($registry, Player::class);
     }
 
+    public function getTeamBombardier(int $team_id): ?Player
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->select('p')
+            ->leftJoin('p.goals', 'goals')
+            ->where('p.team = :team_id')
+            ->setParameter('team_id', $team_id);
+        $qb->setMaxResults(1);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    public function getTeamAssistant(int $team_id): ?Player
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->select('p')
+            ->leftJoin('p.assists', 'assists')
+            ->where('p.team = :team_id')
+            ->setParameter('team_id', $team_id);
+        $qb->setMaxResults(1);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    public function getTourneyBombardier(int $tourney_id): ?Player
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->select('p')
+            ->leftJoin('p.goals', 'goals')
+            ->leftJoin('goals.game', 'game')
+            ->where('game.tourney = :tourney_id')
+            ->setParameter('tourney_id', $tourney_id);
+        $qb->setMaxResults(1);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    public function getTourneyAssistant(int $tourney_id): ?Player
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->select('p')
+            ->leftJoin('p.assists', 'assists')
+            ->leftJoin('assists.goal', 'goal')
+            ->leftJoin('goal.game', 'game')
+            ->where('game.tourney = :tourney_id')
+            ->setParameter('tourney_id', $tourney_id);
+        $qb->setMaxResults(1);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
 
 }

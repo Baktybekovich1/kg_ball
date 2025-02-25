@@ -4,10 +4,11 @@ controllers:
     namespace: App\Controller
   type: attribute
 
-app.swagger_ui:
-  path: /api
-  methods: GET
-  defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
+#app.swagger_ui:
+#  path: /api
+#  methods: GET
+#  defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
+
 
 team_controllers:
   resource: ../src/Controller/Team
@@ -18,4 +19,14 @@ team_controllers:
 player_controllers:
   resource: ../src/Controller/Player
   prefix: /player
+  type: attribute
+
+game_controllers:
+  resource: ../src/Controller/Game
+  prefix: /game
+  type: attribute
+
+tourney_controllers:
+  resource: ../src/Controller/Tourney
+  prefix: /tourney
   type: attribute

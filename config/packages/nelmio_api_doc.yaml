@@ -1,9 +1,15 @@
 nelmio_api_doc:
-    documentation:
-        info:
-            title: 'Finlogs API'
-            description: 'API for application Finlogs'
-            version: '1.0.0'
-    areas: # Точки входа, где будет применяться документирование
-        path_patterns:
-            - ^/api
+  documentation:
+    info:
+      title: My App
+      description: This is an awesome app!
+      version: 1.0.0
+      x-build: #CommitHash
+    components:
+      securitySchemes:
+        Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+    security:
+      - Bearer: []

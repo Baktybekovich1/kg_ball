@@ -15,14 +15,18 @@ class Assist
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'assists')]
+    #[ORM\ManyToOne(targetEntity: Player::class ,inversedBy: 'assists')]
     private ?Player $player = null;
 
-    #[ORM\ManyToOne(inversedBy: 'assists')]
+    #[ORM\OneToOne(targetEntity: Goal::class, inversedBy: 'assist')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Goal $goal = null;
 
     #[ORM\ManyToOne( targetEntity: Team::class,inversedBy: 'assists')]
     private ?Team $team = null;
+
+    #[ORM\ManyToOne( targetEntity: Team::class,inversedBy: 'assists')]
+    private ?Team $vs_team = null;
 
     public function getId(): ?int
     {
@@ -49,6 +53,16 @@ class Assist
     public function setGoal(?Goal $goal): static
     {
         $this->goal = $goal;
+        $this->team = $this->getGoal()->getPlayer()->getTeam();
+        $a = $this->getGoal()->getGame()->getWinnerTeam();
+        $b = $this->getGoal()->getGame()->getLoserTeam();
+        if ($a === $this->getPlayer()->getTeam()) {
+            $this->team = $this->getPlayer()->getTeam();
+            $this->vs_team = $this->getGoal()->getGame()->getLoserTeam();
+        } else {
+            $this->team = $this->getPlayer()->getTeam();
+            $this->vs_team = $this->getGoal()->getGame()->getWinnerTeam();
+        }
 
         return $this;
     }
@@ -58,10 +72,11 @@ class Assist
         return $this->team;
     }
 
-    public function setTeam(?Team $team): static
+    public function getVsTeam(): ?Team
     {
-        $this->team = $team;
-
-        return $this;
+        return $this->vs_team;
     }
+
+
+
 }

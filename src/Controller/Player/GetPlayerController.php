@@ -2,13 +2,15 @@
 
 namespace App\Controller\Player;
 
-use App\Repository\PlayerRepository;
 use App\Service\Player\GetPlayerService;
+use OpenApi\Attributes\OpenApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use OpenApi\Attributes as OA;
 
+#[OA\Tag(name:'Get api for Player')]
 class GetPlayerController extends AbstractController
 {
     public function __construct(private readonly GetPlayerService $getPlayerService)
@@ -16,7 +18,7 @@ class GetPlayerController extends AbstractController
     }
 
     /* Здесь Get запросы по Игрокам (Player) перед путём каждого Route есть префикс /player;*/
-    #[Route('/personal_card/{id}', name: 'player_personal_cards')]
+    #[Route('/personal_card/{id}', name: 'player_personal_cards',methods: ['GET'])]
     public function personal_card(Request $request): JsonResponse
     {
         return $this->json(['player' => $this
@@ -24,7 +26,7 @@ class GetPlayerController extends AbstractController
             ->GetPlayersPersonalCard($request->get('id'))]);
     }
 
-    #[Route('/list', name: 'players_list')]
+    #[Route('/list', name: 'players_list',methods: ['GET'])]
     public function players_list(Request $request): JsonResponse
     {
         return $this->json(['players' => $this
@@ -32,7 +34,7 @@ class GetPlayerController extends AbstractController
             ->getPlayersList()]);
     }
 
-    #[Route('/statistic/{id}', name: 'player_statistic')]
+    #[Route('/statistic/{id}', name: 'player_statistic',methods: ['GET'])]
     public function player_statistic(Request $request): JsonResponse
     {
         return $this->json(['player' => $this
