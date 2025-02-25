@@ -1,7 +1,7 @@
 FROM nginx:stable
 
 # Volume for virtual hosts
-VOLUME "/etc/nginx/conf.d"
+#VOLUME "/etc/nginx/conf.d"
 
 COPY nginx.conf /etc/nginx/templates/default.conf.template
 COPY ./nginx_entrypoint.sh /docker-entrypoint.d/.
