@@ -6,7 +6,9 @@ services:
       context: ../
       dockerfile: docker/php/Dockerfile.prod
     container_name: ${PHP_CONTAINER_NAME}
-    env_file: .env
+    env_file: .env 
+    expose:
+      - 9000
     volumes:
       - ../:/app:cached
     environment:
