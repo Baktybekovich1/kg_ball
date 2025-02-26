@@ -1,26 +1,29 @@
-# Установка PHP
 FROM php:8.2-fpm
+RUN apt-get update
 
-# Обновление и установка зависимостей
+# postgres extension
+RUN apt-get update && \
+    apt-get install -y libpq-dev && \
+    docker-php-ext-install pdo pdo_pgsql pgsql && \
+        apt-get install -y git
+
 RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    git \
-    unzip \
-    wget \
-    libzip-dev \
-    libicu-dev
+    zlib1g-dev \
+    libzip-dev
+RUN docker-php-ext-install zip
 
-# Установка расширений PHP
-RUN docker-php-ext-install pdo pdo_pgsql zip intl
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Установка Composer
-USER root
-RUN curl -sS https://getcomposer.org/installer | php && \
-    chmod +x composer.phar && \
-    mv composer.phar /usr/local/bin/composer
+RUN mkdir -p /app
 
-# Переход на пользователя
+
 RUN useradd -u 1000 -m user
+
+RUN chown user:user /app
+
 USER user
+
+
 
 WORKDIR /app
