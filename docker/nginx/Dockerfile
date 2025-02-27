@@ -4,7 +4,7 @@ FROM nginx:stable
 #VOLUME "/etc/nginx/conf.d"
 
 COPY nginx.conf /etc/nginx/templates/default.conf.template
-COPY ./nginx_entrypoint.sh /docker-entrypoint.d/.
+#COPY ./nginx_entrypoint.sh /docker-entrypoint.d/.
 COPY ./autorenew_hook.sh /etc/letsencrypt/renewal-hooks/deploy/.
 RUN chmod +x /docker-entrypoint.d/nginx_entrypoint.sh
 RUN apt update

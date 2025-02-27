@@ -9,6 +9,10 @@ controllers:
 #  methods: GET
 #  defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
 
+#easy_admin_bundle:
+#  resource: ../src/Controller/Admin
+#  type: attribute
+#  prefix: /admin
 
 team_controllers:
   resource: ../src/Controller/Team
