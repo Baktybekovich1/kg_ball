@@ -2,12 +2,12 @@
 
 namespace App\Dto\Player;
 
-class GetPlayerNameAndGoals
+class GetPlayerNameAndAssistsDto
 {
     public function __construct(
-        public int $playerId,
+        public int    $playerId,
         public string $playerName,
-        public int $goalsCount
+        public int $assistsCount
     )
     {
     }

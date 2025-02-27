@@ -3,8 +3,8 @@
 namespace App\Service\Tourney;
 
 use App\Dto\Player\GetPlayerGoalAndAssist;
-use App\Dto\Player\GetPlayerNameAndAssists;
-use App\Dto\Player\GetPlayerNameAndGoals;
+use App\Dto\Player\GetPlayerNameAndAssistsDto;
+use App\Dto\Player\GetPlayerNameAndGoalsDto;
 use App\Dto\Team\GetTeamGoalsAndAssistsDto;
 use App\Dto\Tourney\GetTourneyReviewDto;
 use App\Repository\AssistRepository;
@@ -45,12 +45,12 @@ readonly class GetTourneyService
                 $this->goalRepository->getTeamGoalQuantityInTourney($tourney->getTourneyTeamPrizes()->getThirdPosition()->getId(), $tourney->getId()),
                 $this->assistRepository->getTeamAssistQuantityInTourney($tourney->getTourneyTeamPrizes()->getThirdPosition()->getId(), $tourney->getId())
             ),
-            new GetPlayerNameAndGoals(
+            new GetPlayerNameAndGoalsDto(
                 $this->playerRepository->getTourneyBombardier($tourney->getId())->getId(),
                 $this->playerRepository->getTourneyBombardier($tourney->getId())->getName(),
                 $this->goalRepository->getPlayerGoalQuantityInTourney($this->playerRepository->getTourneyBombardier($tourney->getId())->getId(), $tourney->getId())
             ),
-            new GetPlayerNameAndAssists(
+            new GetPlayerNameAndAssistsDto(
                 $this->playerRepository->getTourneyAssistant($tourney->getId())->getId(),
                 $this->playerRepository->getTourneyAssistant($tourney->getId())->getName(),
                 $this->assistRepository->getPlayerAssistQuantityInTourney($this->playerRepository->getTourneyAssistant($tourney->getId())->getId(), $tourney->getId())

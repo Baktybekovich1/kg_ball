@@ -121,5 +121,16 @@ class GoalRepository extends ServiceEntityRepository
         return $qb->getQuery()->getSingleScalarResult();
     }
 
+    public function getTeamGoalsInGame(int $team_id, int $game_id): ?array
+    {
+        $qb = $this->createQueryBuilder('goal');
+        $qb->leftJoin('goal.player', 'player')
+            ->where('player.team = :team_id')
+            ->andWhere('goal.game = :game_id')
+            ->setParameter('team_id', $team_id)
+            ->setParameter('game_id', $game_id);
+        return $qb->getQuery()->getResult();
+    }
+
 
 }

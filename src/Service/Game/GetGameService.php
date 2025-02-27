@@ -5,7 +5,9 @@ namespace App\Service\Game;
 use App\Dto\Game\GetGameGoalsDto;
 use App\Dto\Game\GetGameScoresDto;
 use App\Dto\Goal\GetGoalInfoDto;
-use App\Dto\Player\GetPlayerNameAndGoals;
+use App\Dto\Player\GetPlayerNameAndAssistsDto;
+use App\Dto\Player\GetPlayerNameAndGoalsDto;
+use App\Dto\Player\GetPlayerNameDto;
 use App\Repository\AssistRepository;
 use App\Repository\GameRepository;
 use App\Repository\GoalRepository;
@@ -35,9 +37,10 @@ readonly class GetGameService
     {
         $game = $this->gameRepository->find($id);
 
+//        dd($this->goalRepository->getTeamGoalsInGame($game->getWinnerTeam()->getId(), $game->getId()));
         return new GetGameGoalsDto(
-            $this->goals($game->getWinnerTeam()->getGoals()),
-            $this->goals($game->getLoserTeam()->getGoals())
+            $this->goals($this->goalRepository->getTeamGoalsInGame($game->getWinnerTeam()->getId(), $game->getId())),
+            $this->goals($this->goalRepository->getTeamGoalsInGame($game->getLoserTeam()->getId(),$game->getId()))
         );
 
     }
@@ -46,25 +49,24 @@ readonly class GetGameService
     {
         $goals = [];
         foreach ($go as $goal) {
-            $assist = $goal->getAssist();
             if ($goal->getAssist()) {
                 $goals[] = new GetGoalInfoDto(
                     $goal->getId(),
-                    new GetPlayerNameAndGoals(
+                    new GetPlayerNameDto(
                         $goal->getPlayer()->getId(),
-                        $goal->getPlayer()->getName(),
+                        $goal->getPlayer()->getName() . ' ' . $goal->getPlayer()->getSurname()
                     ),
-                    new GetPlayerNameAndGoals(
+                    new GetPlayerNameDto(
                         $goal->getAssist()->getPlayer()->getId(),
-                        $goal->getAssist()->getPlayer()->getName()
+                        $goal->getAssist()->getPlayer()->getName(). ' ' . $goal->getAssist()->getPlayer()->getSurname()
                     )
                 );
             } else {
                 $goals[] = new GetGoalInfoDto(
                     $goal->getId(),
-                    new GetPlayerNameAndGoals(
+                    new GetPlayerNameDto(
                         $goal->getPlayer()->getId(),
-                        $goal->getPlayer()->getName(),
+                        $goal->getPlayer()->getName(). ' ' . $goal->getPlayer()->getSurname()
                     )
 
                 );
