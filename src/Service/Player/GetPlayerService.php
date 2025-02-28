@@ -2,6 +2,8 @@
 
 namespace App\Service\Player;
 
+use App\Dto\Player\GetPlayerG_A_TeamDto;
+use App\Dto\Player\GetPlayerGoalAndAssist;
 use App\Dto\Player\GetPlayerListDto;
 use App\Dto\Player\GetPlayerPersonalCardDto;
 use App\Dto\Player\GetPlayerStatisticDto;
@@ -14,9 +16,9 @@ use App\Repository\TypeOfGoalRepository;
 class GetPlayerService
 {
     public function __construct(
-        private readonly PlayerRepository     $playerRepository,
-        private readonly GoalRepository       $goalRepository,
-        private readonly AssistRepository     $assistRepository
+        private readonly PlayerRepository $playerRepository,
+        private readonly GoalRepository   $goalRepository,
+        private readonly AssistRepository $assistRepository
     )
     {
     }
@@ -54,9 +56,26 @@ class GetPlayerService
 
         return new GetPlayerStatisticDto(
             $this->goalRepository->getPlayerGoalQuantity($id),
-            $this->goalRepository->getPlayerGoalQuantity($id) - $this->goalRepository->getPlayerGoalTypeQuantity($id,3),
-            $this->goalRepository->getPlayerGoalTypeQuantity($id,3),
+            $this->goalRepository->getPlayerGoalQuantity($id) - $this->goalRepository->getPlayerGoalTypeQuantity($id, 3),
+            $this->goalRepository->getPlayerGoalTypeQuantity($id, 3),
             $this->assistRepository->getPlayerAssistQuantity($id)
         );
+    }
+
+    public function getBestPlayers(): array
+    {
+        $players = $this->playerRepository->findAll();
+        $result = [];
+        foreach ($players as $player) {
+            $result[] = new GetPlayerG_A_TeamDto(
+                $player->getId(),
+                $player->getName() . ' ' . $player->getSurname(),
+                $player->getTeam()->getTitle(),
+                $this->goalRepository->getPlayerGoalQuantity($player->getId()),
+                $this->assistRepository->getPlayerAssistQuantity($player->getId())
+            );
+        }
+        return $result;
+
     }
 }

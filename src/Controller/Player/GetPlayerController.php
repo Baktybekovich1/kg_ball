@@ -41,6 +41,12 @@ class GetPlayerController extends AbstractController
             ->getPlayerService
             ->getPlayerStatistic($request->get('id'))]);
     }
+    
+    #[Route('/best_players', name: 'app_player_best_players',methods: ['GET'])]
+    public function best_players(): JsonResponse
+    {
+        return $this->json($this->getPlayerService->getBestPlayers());
+    }
 
 
 }
