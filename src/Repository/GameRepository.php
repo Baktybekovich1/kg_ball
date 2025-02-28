@@ -18,10 +18,12 @@ class GameRepository extends ServiceEntityRepository
 
     public function GetTeamQuantityAllGames(int $teamId): ?int
     {
-        $conn = $this->getEntityManager()->getConnection();
-        $sql = "SELECT COUNT(*) FROM game WHERE home_team_id = :team_id OR away_team_id = :team_id";
-        $result = $conn->executeQuery($sql, ['team_id' => $teamId]);
-        return $result->fetchOne();
+        $qb = $this->createQueryBuilder('game');
+        $qb->select('COUNT(game.id)')
+            ->where('game.winnerTeam = :teamId')
+            ->orWhere('game.loserTeam = :teamid')
+            ->setParameter('teamid', $teamId);
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
     public function GetTeamAllGames(int $teamId): ?array

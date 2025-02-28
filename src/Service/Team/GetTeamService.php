@@ -3,8 +3,8 @@
 namespace App\Service\Team;
 
 use App\Dto\Player\GetPlayerGoalAndAssist;
-use App\Dto\Player\GetPlayerNameAndAssists;
-use App\Dto\Player\GetPlayerNameAndGoals;
+use App\Dto\Player\GetPlayerNameAndAssistsDto;
+use App\Dto\Player\GetPlayerNameAndGoalsDto;
 use App\Dto\Team\GetTeamGameInfoDto;
 use App\Dto\Team\GetTeamGameListDto;
 use App\Dto\Team\GetTeamNameAndGoalTotalInGame;
@@ -20,15 +20,17 @@ use App\Repository\GameRepository;
 use App\Repository\GoalRepository;
 use App\Repository\PlayerRepository;
 use App\Repository\TeamRepository;
+use App\Repository\TourneyTeamPrizesRepository;
 
 readonly class GetTeamService
 {
     public function __construct(
-        private GameRepository      $gameRepository,
-        private GoalRepository      $goalRepository,
-        private AssistRepository    $assistRepository, private PlayerRepository $playerRepository, private TeamRepository $teamRepository,
-
-
+        private GameRepository              $gameRepository,
+        private GoalRepository              $goalRepository,
+        private AssistRepository            $assistRepository,
+        private PlayerRepository            $playerRepository,
+        private TeamRepository              $teamRepository,
+        private TourneyTeamPrizesRepository $tourneyTeamPrizesRepository,
     )
     {
     }
@@ -36,15 +38,16 @@ readonly class GetTeamService
     public function getProgress($id): GetTeamProgressDto
     {
         return new GetTeamProgressDto(
-            $this->teamAwardRepository->getQuantityOfAward($id, 1),
-            $this->teamAwardRepository->getQuantityOfAward($id, 2),
-            $this->teamAwardRepository->getQuantityOfAward($id, 3));
+            $this->tourneyTeamPrizesRepository->getTeamFirstPositionQuantity($id),
+            $this->tourneyTeamPrizesRepository->getTeamSecondPositionQuantity($id),
+            $this->tourneyTeamPrizesRepository->getTeamThirdPositionQuantity($id));
     }
 
     public function getGameInfo($id): GetTeamGameInfoDto
     {
 
-        return new GetTeamGameInfoDto($this->gameRepository->GetTeamQuantityAllGames($id),
+        return new GetTeamGameInfoDto(
+            $this->gameRepository->GetTeamQuantityAllGames($id),
             $this->goalRepository->getTeamGoalQuantity($id),
             $this->goalRepository->getTeamGoalTypeQuantity($id, 3),
             $this->assistRepository->getTeamAssistQuantity($id),

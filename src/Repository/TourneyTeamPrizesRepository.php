@@ -16,28 +16,29 @@ class TourneyTeamPrizesRepository extends ServiceEntityRepository
         parent::__construct($registry, TourneyTeamPrizes::class);
     }
 
-    //    /**
-    //     * @return TourneyTeamPrizes[] Returns an array of TourneyTeamPrizes objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('t.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function getTeamFirstPositionQuantity(int $teamId): int
+    {
+        $qb = $this->createQueryBuilder('tourney_team_prizes');
+        $qb->select('COUNT(tourney_team_prizes.id)')
+            ->where('tourney_team_prizes.firstPosition = :teamId')
+            ->setParameter('teamId', $teamId);
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 
-    //    public function findOneBySomeField($value): ?TourneyTeamPrizes
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function getTeamSecondPositionQuantity(int $teamId): int
+    {
+        $qb = $this->createQueryBuilder('tourney_team_prizes');
+        $qb->select('COUNT(tourney_team_prizes.id)')
+            ->where('tourney_team_prizes.secondPosition = :teamId')
+            ->setParameter('teamId', $teamId);
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+    public function getTeamThirdPositionQuantity(int $teamId): int
+    {
+        $qb = $this->createQueryBuilder('tourney_team_prizes');
+        $qb->select('COUNT(tourney_team_prizes.id)')
+            ->where('tourney_team_prizes.thirdPosition = :teamId')
+            ->setParameter('teamId', $teamId);
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 }
