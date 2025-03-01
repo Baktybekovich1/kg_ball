@@ -5,9 +5,9 @@ namespace App\Dto\Player;
 class GetPlayerNameAndAssistsDto
 {
     public function __construct(
-        public int    $playerId,
-        public string $playerName,
-        public int $assistsCount
+        public int|null    $playerId,
+        public string|null $playerName,
+        public int|null $assistsCount
     )
     {
     }

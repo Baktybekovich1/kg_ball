@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Goal;
+use App\Entity\Player;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -102,10 +103,10 @@ class GoalRepository extends ServiceEntityRepository
 
     public function getPlayerGoalQuantityVSTeam(int $player_id, int $vs_team_id): ?int
     {
-        $qb = $this->createQueryBuilder('g');
-        $qb->select('COUNT(g.id)')
-            ->where('g.player = :player_id')
-            ->andWhere('g.vs_team = :vs_team_id');
+        $qb = $this->createQueryBuilder('goal');
+        $qb->select('COUNT(goal.id)')
+            ->where('goal.player = :player_id')
+            ->andWhere('goal.vs_team = :vs_team_id');
         $qb->setParameter('player_id', $player_id);
         $qb->setParameter('vs_team_id', $vs_team_id);
         return $qb->getQuery()->getSingleScalarResult();
@@ -130,6 +131,33 @@ class GoalRepository extends ServiceEntityRepository
             ->setParameter('team_id', $team_id)
             ->setParameter('game_id', $game_id);
         return $qb->getQuery()->getResult();
+    }
+
+    public function findBombardierVsTeam(int $teamId, int $vsTeamId): ?array
+    {
+        $qb = $this->createQueryBuilder('g');
+
+        $qb->select('p.id AS playerId, concat(p.name, \' \', p.surname) AS playerName, COUNT(g.id) AS goalCount')
+            ->join('g.player', 'p') // Соединяем с игроками
+            ->where('g.team = :teamId') // Ограничиваем команду, которая забивала
+            ->andWhere('g.vs_team = :vsTeamId') // Ограничиваем команду, против которой играли
+            ->setParameter('teamId', $teamId)
+            ->setParameter('vsTeamId', $vsTeamId)
+            ->groupBy('p.id') // Группируем по игрокам
+            ->orderBy('goalCount', 'DESC') // Сортируем по количеству голов
+            ->setMaxResults(1); // Берём только одного игрока
+
+        $result = $qb->getQuery()->getOneOrNullResult();
+
+        if (!$result) {
+            return [
+                'playerId' => null,
+                'playerName' => null,
+                'goalCount' => null
+            ];
+        }
+
+        return $result;
     }
 
 

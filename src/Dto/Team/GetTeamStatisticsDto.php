@@ -12,8 +12,8 @@ class GetTeamStatisticsDto
         public int                        $winning,
         public int                        $goals,
         public int                        $assists,
-        public GetPlayerNameAndGoalsDto   $bombardier,
-        public GetPlayerNameAndAssistsDto $assistant
+        public GetPlayerNameAndGoalsDto|null   $bombardier,
+        public GetPlayerNameAndAssistsDto|null $assistant
     )
     {
     }

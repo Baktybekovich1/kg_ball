@@ -8,8 +8,7 @@ class GetTeamGameInfoDto
         public int $allGames,
         public int $goals,
         public int $penalty,
-        public int $assists,
-        public int $ownGoals
+        public int $assists
     )
     {
     }

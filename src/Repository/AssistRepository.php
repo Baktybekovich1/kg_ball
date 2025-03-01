@@ -35,7 +35,7 @@ class AssistRepository extends ServiceEntityRepository
             ->setParameter('tourney_id', $tourney_id)
             ->setParameter('player_id', $player_id);
         return $qb->getQuery()->getSingleScalarResult();
-        
+
     }
 
     public function getTeamAssistQuantity(int $team_id): ?int
@@ -93,6 +93,30 @@ class AssistRepository extends ServiceEntityRepository
             ->where('game.tourney = :tourney_id')
             ->setParameter('tourney_id', $tourney_id);
         return $qb->getQuery()->getSingleScalarResult();
+    }
 
+    public function findAssistantVsTeam(int $team_id, int $vs_team_id): ?array
+    {
+        $qb = $this->createQueryBuilder('assist');
+        $qb->select('player.id as playerId , concat(player.name,\' \', player.surname) as playerName, COUNT(assist.id) as assistCount ')
+            ->join('assist.player', 'player')
+            ->where('assist.team = :team_id')
+            ->andWhere('assist.vs_team = :vs_team_id')
+            ->setParameter('team_id', $team_id)
+            ->setParameter('vs_team_id', $vs_team_id)
+            ->groupBy('player.id')
+            ->orderBy('assistCount', 'DESC')
+            ->setMaxResults(1);
+
+        $result = $qb->getQuery()->getOneOrNullResult();
+        if (!$result) {
+            return [
+                'playerId' => null,
+                'playerName' => null,
+                'assistCount' => null
+            ];
+        }
+
+        return $result;
     }
 }
