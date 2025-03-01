@@ -29,4 +29,11 @@ class GetTourneyController extends AbstractController
         return $this->json($this->getTourneyService->getBestPlayers($request->get('id')));
     }
 
+    #[Route('/winner/{id}',name: 'app_tourney_winner', methods: ['GET'])]
+    public function winner(Request $request): JsonResponse
+    {
+        return $this->json($this->getTourneyService->getWinner($request->get('id')));
+        
+    }
+
 }

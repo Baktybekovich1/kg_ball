@@ -6,6 +6,7 @@ use App\Dto\Player\GetPlayerGoalAndAssist;
 use App\Dto\Player\GetPlayerNameAndAssistsDto;
 use App\Dto\Player\GetPlayerNameAndGoalsDto;
 use App\Dto\Team\GetTeamGoalsAndAssistsDto;
+use App\Dto\Team\GetTeamInfoDto;
 use App\Dto\Tourney\GetTourneyReviewDto;
 use App\Repository\AssistRepository;
 use App\Repository\GoalRepository;
@@ -80,4 +81,14 @@ readonly class GetTourneyService
 
     }
 
+    public function getWinner(int $tourney_id)
+    {
+        $tourney = $this->tourneyRepository->find($tourney_id);
+        $winner = $tourney->getTourneyTeamPrizes()->getFirstPosition();
+        return new GetTeamInfoDto(
+            $winner->getId(),
+            $winner->getTitle(),
+            $winner->getLogo()
+        );
+    }
 }
