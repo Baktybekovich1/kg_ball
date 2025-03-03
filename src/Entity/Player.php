@@ -23,7 +23,7 @@ class Player
     #[ORM\Column(length: 255)]
     private ?string $surname = null;
 
-    #[ORM\ManyToOne(targetEntity: Team::class,inversedBy: 'players')]
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'players')]
     private ?Team $team = null;
 
     #[ORM\Column(length: 255)]
@@ -47,7 +47,7 @@ class Player
 
     public function __toString(): string
     {
-        return $this->name ?? 'Unnamed Player';
+        return $this->name . ' ' . $this->surname ?? 'Unnamed Player';
     }
 
     public function getId(): ?int
