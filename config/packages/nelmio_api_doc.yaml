@@ -1,5 +1,9 @@
 nelmio_api_doc:
   documentation:
+    paths:
+      # Исключение путей, начинающихся с /admin
+      exclude_patterns:
+        - '^/admin'
     info:
       title: My App
       description: This is an awesome app!

@@ -40,6 +40,7 @@ class Goal
     public function __toString(): string
     {
         return
+            $this->getId() .' ' .
             $this->player->getName() . ' ' .
             $this->getGame()->getWinnerTeam()->getTitle() . ' VS ' .
             $this->getGame()->getLoserTeam()->getTitle() . ' ' .
