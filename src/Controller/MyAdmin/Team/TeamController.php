@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin\Team;
+namespace App\Controller\MyAdmin\Team;
 
 use App\Dto\Team\GetTeamTitleLogoDto;
 use App\Service\Team\AdminTeamService;
