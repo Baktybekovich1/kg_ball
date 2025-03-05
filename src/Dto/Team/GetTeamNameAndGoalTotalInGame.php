@@ -8,6 +8,7 @@ class GetTeamNameAndGoalTotalInGame
         public string $id,
         public string $name,
         public int $goalTotalInGame,
+        public string|null $logo
     )
     {
     }

@@ -32,6 +32,7 @@ class GetPlayerService
             $player->getName() . ' ' . $player->getSurname(),
             $player->getBirthday(),
             $player->getPosition(),
+            $player->getImg(),
             $player->getTeam()->getId(),
             $player->getTeam()->getTitle(),
         );
@@ -44,6 +45,7 @@ class GetPlayerService
                 $player->getId(),
                 $player->getName() . ' ' . $player->getSurname(),
                 $player->getPosition(),
+                $player->getImg(),
                 $player->getTeam()->getId(),
                 $player->getTeam()->getTitle()
             ),
@@ -70,6 +72,7 @@ class GetPlayerService
             $result[] = new GetPlayerG_A_TeamDto(
                 $player->getId(),
                 $player->getName() . ' ' . $player->getSurname(),
+                $player->getImg(),
                 $player->getTeam()->getTitle(),
                 $this->goalRepository->getPlayerGoalQuantity($player->getId()),
                 $this->assistRepository->getPlayerAssistQuantity($player->getId())

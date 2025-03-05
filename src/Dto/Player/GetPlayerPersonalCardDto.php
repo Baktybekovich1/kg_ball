@@ -9,8 +9,9 @@ readonly class GetPlayerPersonalCardDto
         public string $name,
         public string $birthday,
         public string $position,
+        public string|null $img,
         public int    $teamId,
-        public string $teamTitle
+        public string $teamTitle,
 
     )
     {

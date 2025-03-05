@@ -9,6 +9,7 @@ class GetTeamSquadListDto
         public string $name,
         public string $teamTitle,
         public string $position,
+        public string|null $img
     )
     {
     }

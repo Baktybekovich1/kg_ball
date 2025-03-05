@@ -8,6 +8,7 @@ class GetPlayerListDto
         public int    $id,
         public string $name,
         public string $position,
+        public string|null $img,
         public int    $teamId,
         public string $teamName
     )

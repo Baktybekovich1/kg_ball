@@ -62,7 +62,7 @@ readonly class GetTeamService
         return array_map(fn(Player $player) => new GetTeamSquadListDto(
             $player->getId(),
             $player->getName() . ' ' . $player->getSurname(),
-            $team->getTitle(), $player->getPosition()),
+            $team->getTitle(), $player->getPosition(), $player->getImg()),
             $players);
 
     }
@@ -75,12 +75,14 @@ readonly class GetTeamService
             (array)new GetTeamNameAndGoalTotalInGame(
                 $game->getWinnerTeam()->getId(),
                 $game->getWinnerTeam()->getTitle(),
-                $this->goalRepository->getTeamGoalInGameQuantity($game->getWinnerTeam()->getId(), $game->getId())
+                $this->goalRepository->getTeamGoalInGameQuantity($game->getWinnerTeam()->getId(), $game->getId()),
+                $game->getWinnerTeam()->getLogo(),
             )
             , (array)new GetTeamNameAndGoalTotalInGame(
             $game->getLoserTeam()->getId(),
             $game->getLoserTeam()->getTitle(),
-            $this->goalRepository->getTeamGoalInGameQuantity($game->getLoserTeam()->getId(), $game->getId())
+            $this->goalRepository->getTeamGoalInGameQuantity($game->getLoserTeam()->getId(), $game->getId()),
+            $game->getloserTeam()->getLogo()
         ),
             (array)new GetTourneyTitleAndDate(
                 $game->getTourney()->getId(),
@@ -104,6 +106,7 @@ readonly class GetTeamService
                     $player->getName() . ' ' . $player->getSurname(),
                     $goals,
                     $assists,
+                    $player->getImg()
                 );
             }
         }

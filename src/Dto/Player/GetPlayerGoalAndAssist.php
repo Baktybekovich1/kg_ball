@@ -8,7 +8,8 @@ class GetPlayerGoalAndAssist
         public ?int    $playerId,
         public ?string $name,
         public ?int    $goals,
-        public ?int    $assists
+        public ?int    $assists,
+        public string|null $img
     )
     {
     }
