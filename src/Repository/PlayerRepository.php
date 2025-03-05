@@ -63,5 +63,19 @@ class PlayerRepository extends ServiceEntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
+    public function save(Player $entity): bool
+    {
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+        return true;
+    }
+
+    public function remove(Player $entity): bool
+    {
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
+        return true;
+    }
+
 
 }
