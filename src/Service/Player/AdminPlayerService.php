@@ -21,6 +21,7 @@ readonly class AdminPlayerService
         $player
             ->setTeam($this->teamRepository->find($teamId))
             ->setName($name)
+            ->setSurname($surname)
             ->setBirthday($birthday)
             ->setPosition($position)
             ->setImg($img);
