@@ -59,4 +59,10 @@ class GetTeamController extends AbstractController
         return $this->json($this->getTeamService->getGameStatistics($request->get('firstTeamId'), $request->get('secondTeamId')));
     }
 
+//    #[Route(path: '/best_teams', name: 'app_best_teams', methods: ['GET'])]
+//    public function best_teams(): JsonResponse
+//    {
+//        return $this->json($this->getTeamService->getBestTeams());
+//    }
+
 }

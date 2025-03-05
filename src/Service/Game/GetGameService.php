@@ -76,4 +76,22 @@ readonly class GetGameService
 
     }
 
+    public function getAllGames(): array
+    {
+        $db_games = $this->gameRepository->findAll();
+        $games = [];
+        foreach ($db_games as $game) {
+            $games[] = new GetGameScoresDto(
+                $game->getId(),
+                $game->getWinnerTeam()->getId(),
+                $game->getWinnerTeam()->getTitle(),
+                $this->goalRepository->getTeamGoalInGameQuantity($game->getWinnerTeam()->getId(), $game->getId()),
+                $game->getLoserTeam()->getId(),
+                $game->getLoserTeam()->getTitle(),
+                $this->goalRepository->getTeamGoalInGameQuantity($game->getLoserTeam()->getId(), $game->getId())
+            );
+        }
+        return $games;
+    }
+
 }

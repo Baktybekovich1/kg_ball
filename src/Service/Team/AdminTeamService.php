@@ -5,7 +5,7 @@ namespace App\Service\Team;
 use App\Entity\Team;
 use App\Repository\TeamRepository;
 
-readonly class SetTeamService
+readonly class AdminTeamService
 {
     public function __construct(private TeamRepository $teamRepository)
     {
@@ -17,6 +17,12 @@ readonly class SetTeamService
         $team->setTitle($title);
         $team->setLogo($logo);
         return $this->teamRepository->save($team);
+    }
+
+    public function removeTeam(int $id): bool
+    {
+        $team = $this->teamRepository->find($id);
+        return $this->teamRepository->remove($team);
     }
 
 

@@ -37,4 +37,10 @@ class GetGameController extends AbstractController
         return $this->json($this->getGameService->getGameGoals($request->get('id')));
     }
 
+    #[Route(path: '/all_games', name: 'app_get_all_games', methods: ['GET'])]
+    public function all_games(): JsonResponse
+    {
+        return $this->json($this->getGameService->getAllGames());
+    }
+
 }
