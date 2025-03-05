@@ -8,6 +8,7 @@ use App\Dto\Player\GetPlayerNameAndGoalsDto;
 use App\Dto\Team\GetTeamGameInfoDto;
 use App\Dto\Team\GetTeamGameListDto;
 use App\Dto\Team\GetTeamNameAndGoalTotalInGame;
+use App\Dto\Team\GetTeamPointsDto;
 use App\Dto\Team\GetTeamProgressDto;
 use App\Dto\Team\GetTeamSquadListDto;
 use App\Dto\Team\GetTeamStatisticsDto;
@@ -152,9 +153,24 @@ readonly class GetTeamService
         );
     }
 
-//    public function getBestTeams()
-//    {
-//    }
+    public function getBestTeams(): array
+    {
+        $db_teams = $this->teamRepository->findAll();
+        $teams = [];
+        foreach ($db_teams as $team) {
+            $teams[] = new GetTeamPointsDto(
+                $team->getId(),
+                $team->getTitle(),
+                $team->getLogo(),
+                $this->pointsCalculate($team)
+            );
+        }
+        return $teams;
+    }
 
+    private function pointsCalculate($team): int
+    {
+        return count($this->gameRepository->findBy(['winnerTeam' => $team])) * 3;
+    }
 
 }
