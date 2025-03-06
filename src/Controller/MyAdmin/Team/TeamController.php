@@ -35,7 +35,7 @@ class TeamController extends AbstractController
         return $this->json($this->adminTeamService->removeTeam($request->get('id')));
     }
 
-    #[Route(path: '/edit/{id}', name: 'app_admin_team_edit', methods: ['PATCH'])]
+    #[Route(path: '/edit', name: 'app_admin_team_edit', methods: ['PATCH'])]
     public function admin_team_edit(#[MapRequestPayload] EditTeamDto $dto): JsonResponse
     {
         return $this->json($this->adminTeamService->editTeam($dto));
