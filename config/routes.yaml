@@ -17,9 +17,15 @@ api_login_check:
 #  type: attribute
 #  prefix: /admin
 
-my_admin_controllers:
-  resource: ../src/Controller/MyAdmin
-  prefix: /api/admin
+team_admin_controllers:
+  resource: ../src/Controller/MyAdmin/Team
+  prefix: /api/admin/team
+  type: attribute
+
+
+player_admin_controllers:
+  resource: ../src/Controller/MyAdmin/Player
+  prefix: /api/admin/player
   type: attribute
 
 team_controllers:

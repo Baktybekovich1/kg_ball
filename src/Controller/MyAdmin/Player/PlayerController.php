@@ -22,15 +22,21 @@ class PlayerController extends AbstractController
     {
     }
 
-    #[Route(path: '/player/add', name: 'app_add_new_player', methods: ['POST'])]
+    #[Route(path: '/add', name: 'app_add_new_player', methods: ['POST'])]
     public function add_player(#[MapRequestPayload] SetPlayerDto $dto): JsonResponse
     {
         return $this->json($this->adminPlayerService->setPlayer($dto->teamId, $dto->name, $dto->surname, $dto->birthday, $dto->position, $dto->img));
     }
 
-    #[Route(path: '/player/remove/{id}', name: 'app_admin_remove_player', methods: ['DELETE'])]
+    #[Route(path: '/remove/{id}', name: 'app_admin_remove_player', methods: ['DELETE'])]
     public function removePlayer(Request $request): JsonResponse
     {
         return $this->json($this->adminPlayerService->removePlayer($request->get('id')));
     }
+
+//    #[Route(path: '/edit', name: 'app_admin_player_edit', methods: ['PATCH'])]
+//    public function editPlayer(#[MapRequestPayload] ): JsonResponse
+//    {
+//        return $this->json($this->adminPlayerService->editPlayer());
+//    }
 }

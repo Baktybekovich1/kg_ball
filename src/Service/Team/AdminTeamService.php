@@ -2,6 +2,7 @@
 
 namespace App\Service\Team;
 
+use App\Dto\Team\EditTeamDto;
 use App\Entity\Team;
 use App\Repository\TeamRepository;
 
@@ -25,5 +26,11 @@ readonly class AdminTeamService
         return $this->teamRepository->remove($team);
     }
 
-
+    public function editTeam(EditTeamDto $dto): bool
+    {
+        $team = $this->teamRepository->find($dto->id);
+        $team->setTitle($dto->title)
+            ->setLogo($dto->logo);
+        return $this->teamRepository->save($team);
+    }
 }
