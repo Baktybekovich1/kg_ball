@@ -2,6 +2,8 @@
 
 namespace App\Service\Player;
 
+use App\Dto\Player\EditPlayerDto;
+use App\Dto\Player\SetPlayerDto;
 use App\Entity\Player;
 use App\Repository\PlayerRepository;
 use App\Repository\TeamRepository;
@@ -31,5 +33,17 @@ readonly class AdminPlayerService
     public function removePlayer($playerId): bool
     {
         return $this->playerRepository->remove($this->playerRepository->find($playerId));
+    }
+
+    public function editPlayer(EditPlayerDto $dto): bool
+    {
+        $player = $this->playerRepository->find($dto->playerId);
+        $player->setName($dto->name)
+            ->setSurname($dto->surname)
+            ->setBirthday($dto->birthday)
+            ->setPosition($dto->position)
+            ->setImg($dto->img);
+        $this->playerRepository->save($player);
+        return true;
     }
 }

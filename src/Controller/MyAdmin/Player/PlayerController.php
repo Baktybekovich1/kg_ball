@@ -2,6 +2,7 @@
 
 namespace App\Controller\MyAdmin\Player;
 
+use App\Dto\Player\EditPlayerDto;
 use App\Dto\Player\SetPlayerDto;
 use App\Repository\PlayerRepository;
 use App\Service\Player\AdminPlayerService;
@@ -13,7 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Admin api for Player')]
-
 class PlayerController extends AbstractController
 {
     public function __construct(
@@ -34,9 +34,9 @@ class PlayerController extends AbstractController
         return $this->json($this->adminPlayerService->removePlayer($request->get('id')));
     }
 
-//    #[Route(path: '/edit', name: 'app_admin_player_edit', methods: ['PATCH'])]
-//    public function editPlayer(#[MapRequestPayload] ): JsonResponse
-//    {
-//        return $this->json($this->adminPlayerService->editPlayer());
-//    }
+    #[Route(path: '/edit', name: 'app_admin_player_edit', methods: ['PATCH'])]
+    public function editPlayer(#[MapRequestPayload] EditPlayerDto $dto): JsonResponse
+    {
+        return $this->json($this->adminPlayerService->editPlayer($dto));
+    }
 }

@@ -21,7 +21,7 @@ readonly class GetTourneyService
     {
     }
 
-    public function getTourneyReview(int $tourneyId)
+    public function getTourneyReview(int $tourneyId): GetTourneyReviewDto
     {
         $tourney = $this->tourneyRepository->find($tourneyId);
         return new GetTourneyReviewDto(
@@ -73,7 +73,8 @@ readonly class GetTourneyService
                     $player->getId(),
                     $player->getName(),
                     $goals,
-                    $assists
+                    $assists,
+                    $player->getImg()
                 );
             }
         }
@@ -81,7 +82,7 @@ readonly class GetTourneyService
 
     }
 
-    public function getWinner(int $tourney_id)
+    public function getWinner(int $tourney_id): GetTeamInfoDto
     {
         $tourney = $this->tourneyRepository->find($tourney_id);
         $winner = $tourney->getTourneyTeamPrizes()->getFirstPosition();
