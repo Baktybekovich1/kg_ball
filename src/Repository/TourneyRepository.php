@@ -40,4 +40,17 @@ class TourneyRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    public function save(Tourney $entity): bool
+    {
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+        return true;
+    }
+
+    public function remove(Tourney $entity): bool
+    {
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
+        return true;
+    }
 }

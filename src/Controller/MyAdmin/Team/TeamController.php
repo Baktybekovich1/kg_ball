@@ -9,8 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\Routing\Annotation\Route;
+
 use OpenApi\Attributes as OA;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Admin api for Team')]
 class TeamController extends AbstractController
