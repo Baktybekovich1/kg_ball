@@ -33,6 +33,7 @@ class TourneyTeamPrizesRepository extends ServiceEntityRepository
             ->setParameter('teamId', $teamId);
         return $qb->getQuery()->getSingleScalarResult();
     }
+
     public function getTeamThirdPositionQuantity(int $teamId): int
     {
         $qb = $this->createQueryBuilder('tourney_team_prizes');
@@ -41,4 +42,19 @@ class TourneyTeamPrizesRepository extends ServiceEntityRepository
             ->setParameter('teamId', $teamId);
         return $qb->getQuery()->getSingleScalarResult();
     }
+
+    public function save(TourneyTeamPrizes $entity): bool
+    {
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+        return true;
+    }
+
+    public function remove(TourneyTeamPrizes $entity): bool
+    {
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+        return true;
+    }
+
 }
