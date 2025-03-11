@@ -106,8 +106,10 @@ readonly class GetGameService
                 $game->getTourney()->getTitle(),
                 $game->getWinnerTeam()->getId(),
                 $game->getWinnerTeam()->getTitle(),
+                $this->goalRepository->getTeamGoalsInGame($game->getWinnerTeam()->getId(), $game->getLoserTeam()->getId()),
                 $game->getLoserTeam()->getId(),
-                $game->getLoserTeam()->getTitle()
+                $game->getLoserTeam()->getTitle(),
+                $this->goalRepository->getTeamGoalsInGame($game->getLoserTeam()->getId(), $game->getWinnerTeam()->getId())
             );
         }
         return $result;
