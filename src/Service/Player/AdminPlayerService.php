@@ -35,9 +35,9 @@ readonly class AdminPlayerService
         return $this->playerRepository->remove($this->playerRepository->find($playerId));
     }
 
-    public function editPlayer(EditPlayerDto $dto): bool
+    public function editPlayer(EditPlayerDto $dto,int $id): bool
     {
-        $player = $this->playerRepository->find($dto->playerId);
+        $player = $this->playerRepository->find($id);
         $player->setName($dto->name)
             ->setSurname($dto->surname)
             ->setBirthday($dto->birthday)

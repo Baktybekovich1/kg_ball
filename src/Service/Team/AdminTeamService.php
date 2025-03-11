@@ -26,9 +26,9 @@ readonly class AdminTeamService
         return $this->teamRepository->remove($team);
     }
 
-    public function editTeam(EditTeamDto $dto): bool
+    public function editTeam(EditTeamDto $dto, int $id): bool
     {
-        $team = $this->teamRepository->find($dto->id);
+        $team = $this->teamRepository->find($id);
         $team->setTitle($dto->title)
             ->setLogo($dto->logo);
         return $this->teamRepository->save($team);

@@ -5,7 +5,6 @@ namespace App\Dto\Player;
 class EditPlayerDto
 {
     public function __construct(
-        public int    $playerId,
         public int    $teamId,
         public string $name,
         public string $surname,

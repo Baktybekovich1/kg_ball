@@ -29,7 +29,7 @@ player_admin_controllers:
   type: attribute
 
 tourney_admin_controllers:
-  resource: ../src/Controller/MyAdmin/Player
+  resource: ../src/Controller/MyAdmin/Tourney
   prefix: /api/admin/tourney
   type: attribute
 

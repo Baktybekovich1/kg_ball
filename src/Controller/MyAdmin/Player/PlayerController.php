@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Admin api for Player')]
@@ -34,9 +34,9 @@ class PlayerController extends AbstractController
         return $this->json($this->adminPlayerService->removePlayer($request->get('id')));
     }
 
-    #[Route(path: '/edit', name: 'app_admin_player_edit', methods: ['PATCH'])]
-    public function editPlayer(#[MapRequestPayload] EditPlayerDto $dto): JsonResponse
+    #[Route(path: '/edit/{id}', name: 'app_admin_player_edit', methods: ['PATCH'])]
+    public function editPlayer(#[MapRequestPayload] EditPlayerDto $dto,Request $request): JsonResponse
     {
-        return $this->json($this->adminPlayerService->editPlayer($dto));
+        return $this->json($this->adminPlayerService->editPlayer($dto,$request->get('id')));
     }
 }
