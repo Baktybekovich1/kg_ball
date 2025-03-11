@@ -2,6 +2,7 @@
 
 namespace App\Service\Game;
 
+use App\Dto\Game\GetGameDto;
 use App\Dto\Game\GetGameGoalsDto;
 use App\Dto\Game\GetGameScoresDto;
 use App\Dto\Goal\GetGoalInfoDto;
@@ -11,10 +12,11 @@ use App\Dto\Player\GetPlayerNameDto;
 use App\Repository\AssistRepository;
 use App\Repository\GameRepository;
 use App\Repository\GoalRepository;
+use App\Repository\TourneyRepository;
 
 readonly class GetGameService
 {
-    public function __construct(private GameRepository $gameRepository, private GoalRepository $goalRepository, private AssistRepository $assistRepository)
+    public function __construct(private GameRepository $gameRepository, private GoalRepository $goalRepository, private AssistRepository $assistRepository, private TourneyRepository $tourneyRepository)
     {
     }
 
@@ -40,7 +42,7 @@ readonly class GetGameService
 //        dd($this->goalRepository->getTeamGoalsInGame($game->getWinnerTeam()->getId(), $game->getId()));
         return new GetGameGoalsDto(
             $this->goals($this->goalRepository->getTeamGoalsInGame($game->getWinnerTeam()->getId(), $game->getId())),
-            $this->goals($this->goalRepository->getTeamGoalsInGame($game->getLoserTeam()->getId(),$game->getId()))
+            $this->goals($this->goalRepository->getTeamGoalsInGame($game->getLoserTeam()->getId(), $game->getId()))
         );
 
     }
@@ -58,7 +60,7 @@ readonly class GetGameService
                     ),
                     new GetPlayerNameDto(
                         $goal->getAssist()->getPlayer()->getId(),
-                        $goal->getAssist()->getPlayer()->getName(). ' ' . $goal->getAssist()->getPlayer()->getSurname()
+                        $goal->getAssist()->getPlayer()->getName() . ' ' . $goal->getAssist()->getPlayer()->getSurname()
                     )
                 );
             } else {
@@ -66,7 +68,7 @@ readonly class GetGameService
                     $goal->getId(),
                     new GetPlayerNameDto(
                         $goal->getPlayer()->getId(),
-                        $goal->getPlayer()->getName(). ' ' . $goal->getPlayer()->getSurname()
+                        $goal->getPlayer()->getName() . ' ' . $goal->getPlayer()->getSurname()
                     )
 
                 );
@@ -92,6 +94,23 @@ readonly class GetGameService
             );
         }
         return $games;
+    }
+
+    public function getTourneyGames(int $id): array
+    {
+        $games = $this->gameRepository->findBy(['tourney' => $this->tourneyRepository->find($id)]);
+        $result = [];
+        foreach ($games as $game) {
+            $result[] = new GetGameDto(
+                $game->getTourney()->getId(),
+                $game->getTourney()->getTitle(),
+                $game->getWinnerTeam()->getId(),
+                $game->getWinnerTeam()->getTitle(),
+                $game->getLoserTeam()->getId(),
+                $game->getLoserTeam()->getTitle()
+            );
+        }
+        return $result;
     }
 
 }

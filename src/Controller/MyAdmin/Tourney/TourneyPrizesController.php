@@ -15,7 +15,7 @@ use OpenApi\Attributes as OA;
 #[OA\Tag(name: 'Admin api for Tourney Prizes')]
 class TourneyPrizesController extends AbstractController
 {
-    public function __construct(private TourneyPrizesService $prizesService)
+    public function __construct(private readonly TourneyPrizesService $prizesService)
     {
     }
 
