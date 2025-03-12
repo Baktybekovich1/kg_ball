@@ -101,16 +101,6 @@ class GoalRepository extends ServiceEntityRepository
         return $qb->getQuery()->getSingleScalarResult();
     }
 
-    public function getPlayerGoalQuantityVSTeam(int $player_id, int $vs_team_id): ?int
-    {
-        $qb = $this->createQueryBuilder('goal');
-        $qb->select('COUNT(goal.id)')
-            ->where('goal.player = :player_id')
-            ->andWhere('goal.vs_team = :vs_team_id');
-        $qb->setParameter('player_id', $player_id);
-        $qb->setParameter('vs_team_id', $vs_team_id);
-        return $qb->getQuery()->getSingleScalarResult();
-    }
 
     public function getAllGoalsQuantityInTourney(int $tourney_id): ?int
     {
@@ -158,6 +148,20 @@ class GoalRepository extends ServiceEntityRepository
         }
 
         return $result;
+    }
+
+    public function findTourneyBombardier(int $tourney_id): array
+    {
+        $qb = $this->createQueryBuilder('goal');
+        $qb->select('player.id as playerId , concat(player.name,\' \', player.surname) as playerName, COUNT(goal.id) as goalCount')
+            ->join('goal.player', 'player')
+            ->join('goal.game', ' game')
+            ->where('game.tourney = :tourney_id')
+            ->setParameter('tourney_id', $tourney_id)
+            ->groupBy('player.id')
+            ->orderBy('COUNT(goal.id)', 'DESC')
+            ->setMaxResults(1);
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
 

@@ -23,7 +23,10 @@ readonly class GetTourneyService
 
     public function getTourneyReview(int $tourneyId): GetTourneyReviewDto
     {
+
         $tourney = $this->tourneyRepository->find($tourneyId);
+        $bombardier = $this->goalRepository->findTourneyBombardier($tourney->getId());
+        $assistant = $this->assistRepository->findTourneyAssistant($tourney->getId());
         return new GetTourneyReviewDto(
             $tourney->getId(),
             $tourney->getTeamsSum(),
@@ -47,14 +50,14 @@ readonly class GetTourneyService
                 $this->assistRepository->getTeamAssistQuantityInTourney($tourney->getTourneyTeamPrizes()->getThirdPosition()->getId(), $tourney->getId())
             ),
             new GetPlayerNameAndGoalsDto(
-                $this->playerRepository->getTourneyBombardier($tourney->getId())->getId(),
-                $this->playerRepository->getTourneyBombardier($tourney->getId())->getName(),
-                $this->goalRepository->getPlayerGoalQuantityInTourney($this->playerRepository->getTourneyBombardier($tourney->getId())->getId(), $tourney->getId())
+                $bombardier['playerId'],
+                $bombardier['playerName'],
+                $bombardier['goalCount']
             ),
             new GetPlayerNameAndAssistsDto(
-                $this->playerRepository->getTourneyAssistant($tourney->getId())->getId(),
-                $this->playerRepository->getTourneyAssistant($tourney->getId())->getName(),
-                $this->assistRepository->getPlayerAssistQuantityInTourney($this->playerRepository->getTourneyAssistant($tourney->getId())->getId(), $tourney->getId())
+                $assistant['playerId'],
+                $assistant['playerName'],
+                $assistant['assistCount']
             ),
             $this->goalRepository->getAllGoalsQuantityInTourney($tourney->getId()),
             $this->assistRepository->getAllAssistsQuantityInTourney($tourney->getId())

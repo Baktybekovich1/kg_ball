@@ -38,30 +38,6 @@ class PlayerRepository extends ServiceEntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    public function getTourneyBombardier(int $tourney_id): ?Player
-    {
-        $qb = $this->createQueryBuilder('p');
-        $qb->select('p')
-            ->leftJoin('p.goals', 'goals')
-            ->leftJoin('goals.game', 'game')
-            ->where('game.tourney = :tourney_id')
-            ->setParameter('tourney_id', $tourney_id);
-        $qb->setMaxResults(1);
-        return $qb->getQuery()->getOneOrNullResult();
-    }
-
-    public function getTourneyAssistant(int $tourney_id): ?Player
-    {
-        $qb = $this->createQueryBuilder('p');
-        $qb->select('p')
-            ->leftJoin('p.assists', 'assists')
-            ->leftJoin('assists.goal', 'goal')
-            ->leftJoin('goal.game', 'game')
-            ->where('game.tourney = :tourney_id')
-            ->setParameter('tourney_id', $tourney_id);
-        $qb->setMaxResults(1);
-        return $qb->getQuery()->getOneOrNullResult();
-    }
 
     public function save(Player $entity): bool
     {

@@ -119,4 +119,20 @@ class AssistRepository extends ServiceEntityRepository
 
         return $result;
     }
+
+    public function findTourneyAssistant(int $tourney_id): array
+    {
+        $qb = $this->createQueryBuilder('assist');
+        $qb->select('player.id as playerId , concat(player.name,\' \', player.surname) as playerName, COUNT(assist.id) as assistCount')
+            ->join('assist.goal', 'goal')
+            ->join('goal.game', 'game')
+            ->join('assist.player', 'player')
+            ->where('game.tourney = :tourney_id')
+            ->groupBy('player.id')
+            ->orderBy('COUNT(player.id)', 'DESC')
+            ->setParameter('tourney_id', $tourney_id)
+            ->setMaxResults(1);
+        return $qb->getQuery()->getOneOrNullResult();
+
+    }
 }
