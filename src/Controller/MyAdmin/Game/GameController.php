@@ -37,5 +37,4 @@ class GameController extends AbstractController
     {
         return $this->json($this->service->edit($dto, $request->get('gameId')));
     }
-
 }

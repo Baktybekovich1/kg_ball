@@ -164,5 +164,18 @@ class GoalRepository extends ServiceEntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
+    public function save(Goal $entity): bool
+    {
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+        return true;
+    }
+
+    public function remove(Goal $entity): bool
+    {
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
+        return true;
+    }
 
 }
