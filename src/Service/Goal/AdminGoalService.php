@@ -31,8 +31,24 @@ readonly class AdminGoalService
         $goal->setTeam($this->teamRepository->find($dto->teamId));
         $goal->setVsTeam($this->teamRepository->find($dto->vsTeamId));
         $goal->setTypeOfGoal($this->typeOfGoalRepository->find($dto->typeOfGoalId));
-//        $this->goalRepository->s
-        return true;
+        return $this->goalRepository->save($goal);
+    }
+
+    public function remove(int $goalId): bool
+    {
+        $goal = $this->goalRepository->find($goalId);
+        return $this->goalRepository->remove($goal);
+    }
+
+    public function edit(SetGoalDto $dto, int $goalId): bool
+    {
+        $goal = $this->goalRepository->find($goalId);
+        $goal->setPlayer($this->playerRepository->find($dto->playerId));
+        $goal->setGame($this->gameRepository->find($dto->gameId));
+        $goal->setTeam($this->teamRepository->find($dto->teamId));
+        $goal->setVsTeam($this->teamRepository->find($dto->vsTeamId));
+        $goal->setTypeOfGoal($this->typeOfGoalRepository->find($dto->typeOfGoalId));
+        return $this->goalRepository->save($goal);
     }
 
 }
