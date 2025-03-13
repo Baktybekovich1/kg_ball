@@ -10,7 +10,9 @@ use App\Repository\GoalRepository;
 use App\Repository\PlayerRepository;
 use App\Repository\TeamRepository;
 use App\Repository\TypeOfGoalRepository;
+use OpenApi\Attributes as OA;
 
+#[OA\Tag(name: 'Admin api for Goal')]
 readonly class AdminGoalService
 {
     public function __construct(
