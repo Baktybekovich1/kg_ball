@@ -22,6 +22,11 @@ team_admin_controllers:
   prefix: /api/admin/team
   type: attribute
 
+goal_admin_controllers:
+  resource: ../src/Controller/MyAdmin/Goal
+  prefix: /api/admin/goal
+  type: attribute
+
 game_admin_controllers:
   resource: ../src/Controller/MyAdmin/Game
   prefix: /api/admin/game
