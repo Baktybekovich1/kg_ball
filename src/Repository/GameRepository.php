@@ -48,4 +48,18 @@ class GameRepository extends ServiceEntityRepository
         return $qb->getQuery()->getSingleScalarResult();
     }
 
+    public function save(Game $entity): bool
+    {
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+        return true;
+    }
+
+    public function remove(Game $entity): bool
+    {
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
+        return true;
+    }
+
 }
