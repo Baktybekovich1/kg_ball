@@ -2,7 +2,6 @@
 
 namespace App\Service\Goal;
 
-use App\Controller\MyAdmin\Goal\GoalController;
 use App\Dto\Goal\SetGoalDto;
 use App\Entity\Goal;
 use App\Repository\GameRepository;
