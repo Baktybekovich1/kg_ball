@@ -5,6 +5,7 @@ namespace App\Dto\Game;
 class GetGameDto
 {
     public function __construct(
+        public int    $gameId,
         public int    $tourneyId,
         public string $tourneyTitle,
         public int    $winnerTeamId,

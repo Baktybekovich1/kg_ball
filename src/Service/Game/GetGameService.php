@@ -102,6 +102,7 @@ readonly class GetGameService
         $result = [];
         foreach ($games as $game) {
             $result[] = new GetGameDto(
+                $game->getId(),
                 $game->getTourney()->getId(),
                 $game->getTourney()->getTitle(),
                 $game->getWinnerTeam()->getId(),
