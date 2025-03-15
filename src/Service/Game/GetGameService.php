@@ -98,6 +98,7 @@ readonly class GetGameService
 
     public function getTourneyGames(int $id): array
     {
+
         $games = $this->gameRepository->findBy(['tourney' => $this->tourneyRepository->find($id)]);
         $result = [];
         foreach ($games as $game) {
