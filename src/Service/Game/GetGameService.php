@@ -115,6 +115,7 @@ readonly class GetGameService
             );
         }
         return $result;
+
     }
 
 }
