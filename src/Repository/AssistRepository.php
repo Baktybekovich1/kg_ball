@@ -133,6 +133,19 @@ class AssistRepository extends ServiceEntityRepository
             ->setParameter('tourney_id', $tourney_id)
             ->setMaxResults(1);
         return $qb->getQuery()->getOneOrNullResult();
+    }
 
+    public function save(Assist $entity): bool
+    {
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+        return true;
+    }
+
+    public function remove(Assist $entity): bool
+    {
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
+        return true;
     }
 }

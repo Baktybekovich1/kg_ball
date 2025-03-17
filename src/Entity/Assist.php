@@ -77,6 +77,17 @@ class Assist
         return $this->vs_team;
     }
 
+    public function setTeam(?Team $team): void
+    {
+        $this->team = $team;
+    }
+
+    public function setVsTeam(?Team $vs_team): void
+    {
+        $this->vs_team = $vs_team;
+    }
+
+
 
 
 }
