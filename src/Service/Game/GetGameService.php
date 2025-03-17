@@ -58,6 +58,7 @@ readonly class GetGameService
                         $goal->getPlayer()->getId(),
                         $goal->getPlayer()->getName() . ' ' . $goal->getPlayer()->getSurname()
                     ),
+                    $goal->getAssist()->getId(),
                     new GetPlayerNameDto(
                         $goal->getAssist()->getPlayer()->getId(),
                         $goal->getAssist()->getPlayer()->getName() . ' ' . $goal->getAssist()->getPlayer()->getSurname()
@@ -69,8 +70,7 @@ readonly class GetGameService
                     new GetPlayerNameDto(
                         $goal->getPlayer()->getId(),
                         $goal->getPlayer()->getName() . ' ' . $goal->getPlayer()->getSurname()
-                    )
-
+                    ), null
                 );
             }
         }

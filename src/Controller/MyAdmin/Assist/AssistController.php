@@ -37,5 +37,4 @@ class AssistController extends AbstractController
     {
         return $this->json($this->adminAssistService->edit($dto, $request->get('assistId')));
     }
-
 }

@@ -10,8 +10,9 @@ class GetGoalInfoDto
 {
 
     public function __construct(
-        public int                       $goalId,
+        public int               $goalId,
         public GetPlayerNameDto  $goalAuthor,
+        public int|null          $assistId,
         public ?GetPlayerNameDto $assistAuthor = null,
     )
     {
