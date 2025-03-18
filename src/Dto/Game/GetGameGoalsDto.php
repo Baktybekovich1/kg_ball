@@ -2,8 +2,6 @@
 
 namespace App\Dto\Game;
 
-use App\Dto\Goal\GetGoalInfoDto;
-
 class GetGameGoalsDto
 {
     public function __construct(

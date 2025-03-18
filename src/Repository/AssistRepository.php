@@ -135,6 +135,18 @@ class AssistRepository extends ServiceEntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
+    public function findTeamAssistsInGame(int $team_id, int $game_id): array
+    {
+        $qb = $this->createQueryBuilder('assist');
+        $qb->select('assist')
+            ->join('assist.goal', 'goal')
+            ->where('goal.team = :team_id')
+            ->andWhere('goal.game = :game_id')
+            ->setParameter('team_id', $team_id)
+            ->setParameter('game_id', $game_id);
+        return $qb->getQuery()->getResult();
+    }
+
     public function save(Assist $entity): bool
     {
         $this->getEntityManager()->persist($entity);

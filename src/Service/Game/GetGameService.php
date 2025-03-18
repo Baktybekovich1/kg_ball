@@ -2,6 +2,8 @@
 
 namespace App\Service\Game;
 
+use App\Dto\Assist\GetAssistInfoDto;
+use App\Dto\Game\GetAssistsInGameDto;
 use App\Dto\Game\GetGameDto;
 use App\Dto\Game\GetGameGoalsDto;
 use App\Dto\Game\GetGameScoresDto;
@@ -118,4 +120,26 @@ readonly class GetGameService
 
     }
 
+    public function getGameAssists(int $gameId): GetAssistsInGameDto
+    {
+        $game = $this->gameRepository->find($gameId);
+        return new GetAssistsInGameDto($this->getTeamAssistsInGame($this->assistRepository->findTeamAssistsInGame($gameId, $game->getWinnerTeam()->getId())),
+            $this->getTeamAssistsInGame($this->assistRepository->findTeamAssistsInGame($gameId, $game->getLoserTeam()->getId()))
+        );
+    }
+
+    public function getTeamAssistsInGame($ass): array
+    {
+        $assists = [];
+        foreach ($ass as $assist) {
+            $assists[] = new GetAssistInfoDto(
+                $assist->getId(),
+                new GetPlayerNameDto(
+                    $assist->getPlayer()->getId(),
+                    $assist->getPlayer()->getName() . ' ' . $assist->getPlayer()->getSurname()
+                )
+            );
+        }
+        return $assists;
+    }
 }
