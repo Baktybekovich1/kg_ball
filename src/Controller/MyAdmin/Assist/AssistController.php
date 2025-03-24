@@ -23,6 +23,7 @@ class AssistController extends AbstractController
     #[Route(path: '/add', name: 'app_admin_assist_add', methods: ['POST'])]
     public function add(#[MapRequestPayload] SetAssistDto $dto): JsonResponse
     {
+        
         return $this->json($this->adminAssistService->add($dto));
     }
 
