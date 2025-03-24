@@ -123,23 +123,30 @@ readonly class GetGameService
     public function getGameAssists(int $gameId): GetAssistsInGameDto
     {
         $game = $this->gameRepository->find($gameId);
-        return new GetAssistsInGameDto($this->getTeamAssistsInGame($this->assistRepository->findTeamAssistsInGame($gameId, $game->getWinnerTeam()->getId())),
-            $this->getTeamAssistsInGame($this->assistRepository->findTeamAssistsInGame($gameId, $game->getLoserTeam()->getId()))
-        );
-    }
+        $goals = $this->goalRepository->findBy(['gameId' => $gameId]);
+        $wAsists = [];
+        $lAsists = [];
 
-    public function getTeamAssistsInGame($ass): array
-    {
-        $assists = [];
-        foreach ($ass as $assist) {
-            $assists[] = new GetAssistInfoDto(
-                $assist->getId(),
-                new GetPlayerNameDto(
-                    $assist->getPlayer()->getId(),
-                    $assist->getPlayer()->getName() . ' ' . $assist->getPlayer()->getSurname()
-                )
-            );
+        foreach ($goals as $goal) {
+            if ($goal->getTeam() === $game->getWinnerTeam()) {
+                $wAsists[] = new GetAssistInfoDto(
+                    $goal->getAssist()->getId(),
+                    new GetPlayerNameDto(
+                        $goal->getAssist()->getPlayer()->getId(),
+                        $goal->getAssist()->getPlayer()->getName() . ' ' . $goal->getAssist()->getPlayer()->getSurname()
+                    )
+                );
+            } elseif ($goal->getTeam() === $game->getLoserTeam()) {
+                $lAsists[] = new GetAssistInfoDto(
+                    $goal->getAssist()->getId(),
+                    new GetPlayerNameDto(
+                        $goal->getAssist()->getPlayer()->getId(),
+                        $goal->getAssist()->getPlayer()->getName() . ' ' . $goal->getAssist()->getPlayer()->getSurname()
+                    )
+                );
+            }
+
         }
-        return $assists;
+        return new GetAssistsInGameDto($wAsists, $lAsists);
     }
 }
