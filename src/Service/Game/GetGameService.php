@@ -128,22 +128,24 @@ readonly class GetGameService
         $lAsists = [];
 
         foreach ($goals as $goal) {
-            if ($goal->getTeam() === $game->getWinnerTeam()) {
-                $wAsists[] = new GetAssistInfoDto(
-                    $goal->getAssist()->getId(),
-                    new GetPlayerNameDto(
-                        $goal->getAssist()->getPlayer()->getId(),
-                        $goal->getAssist()->getPlayer()->getName() . ' ' . $goal->getAssist()->getPlayer()->getSurname()
-                    )
-                );
-            } elseif ($goal->getTeam() === $game->getLoserTeam()) {
-                $lAsists[] = new GetAssistInfoDto(
-                    $goal->getAssist()->getId(),
-                    new GetPlayerNameDto(
-                        $goal->getAssist()->getPlayer()->getId(),
-                        $goal->getAssist()->getPlayer()->getName() . ' ' . $goal->getAssist()->getPlayer()->getSurname()
-                    )
-                );
+            if ($goal->getAssist()) {
+                if ($goal->getTeam() === $game->getWinnerTeam()) {
+                    $wAsists[] = new GetAssistInfoDto(
+                        $goal->getAssist()->getId(),
+                        new GetPlayerNameDto(
+                            $goal->getAssist()->getPlayer()->getId(),
+                            $goal->getAssist()->getPlayer()->getName() . ' ' . $goal->getAssist()->getPlayer()->getSurname()
+                        )
+                    );
+                } elseif ($goal->getTeam() === $game->getLoserTeam()) {
+                    $lAsists[] = new GetAssistInfoDto(
+                        $goal->getAssist()->getId(),
+                        new GetPlayerNameDto(
+                            $goal->getAssist()->getPlayer()->getId(),
+                            $goal->getAssist()->getPlayer()->getName() . ' ' . $goal->getAssist()->getPlayer()->getSurname()
+                        )
+                    );
+                }
             }
 
         }
