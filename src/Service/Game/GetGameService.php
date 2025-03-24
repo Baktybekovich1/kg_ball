@@ -123,7 +123,7 @@ readonly class GetGameService
     public function getGameAssists(int $gameId): GetAssistsInGameDto
     {
         $game = $this->gameRepository->find($gameId);
-        $goals = $this->goalRepository->findBy(['gameId' => $gameId]);
+        $goals = $this->goalRepository->findBy(['game' => $gameId]);
         $wAsists = [];
         $lAsists = [];
 
