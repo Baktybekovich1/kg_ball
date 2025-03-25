@@ -15,6 +15,7 @@ class Transfer
         private readonly PlayerRepository $playerRepository,
     )
     {
+
     }
 
     public function push(): true
