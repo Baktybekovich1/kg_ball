@@ -106,6 +106,7 @@ readonly class GetTourneyService
     {
         $prizes = $this->tourneyTeamPrizesRepository->findOneBy(['tourney' => $tourneyId]);
         return new GetTourneyPrizesDto(
+            $prizes->getId(),
             $prizes->getFirstPosition()->getId(),
             $prizes->getFirstPosition()->getTitle(),
             $prizes->getSecondPosition()->getId(),
