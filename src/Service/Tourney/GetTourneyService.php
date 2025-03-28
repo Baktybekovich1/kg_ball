@@ -8,15 +8,21 @@ use App\Dto\Player\GetPlayerNameAndGoalsDto;
 use App\Dto\Team\GetTeamGoalsAndAssistsDto;
 use App\Dto\Team\GetTeamInfoDto;
 use App\Dto\Tourney\GetTourneyReviewDto;
+use App\Dto\Tourney\TourneyPrizes\GetTourneyPrizesDto;
 use App\Repository\AssistRepository;
 use App\Repository\GoalRepository;
 use App\Repository\PlayerRepository;
 use App\Repository\TourneyRepository;
+use App\Repository\TourneyTeamPrizesRepository;
 
 readonly class GetTourneyService
 {
     public function __construct(
-        private TourneyRepository $tourneyRepository, private GoalRepository $goalRepository, private AssistRepository $assistRepository, private PlayerRepository $playerRepository
+        private TourneyRepository           $tourneyRepository,
+        private GoalRepository              $goalRepository,
+        private AssistRepository            $assistRepository,
+        private PlayerRepository            $playerRepository,
+        private TourneyTeamPrizesRepository $tourneyTeamPrizesRepository,
     )
     {
     }
@@ -93,6 +99,19 @@ readonly class GetTourneyService
             $winner->getId(),
             $winner->getTitle(),
             $winner->getLogo()
+        );
+    }
+
+    public function getPrizes(int $tourneyId): GetTourneyPrizesDto
+    {
+        $prizes = $this->tourneyTeamPrizesRepository->findOneBy(['tourney' => $tourneyId]);
+        return new GetTourneyPrizesDto(
+            $prizes->getFirstPosition()->getId(),
+            $prizes->getFirstPosition()->getTitle(),
+            $prizes->getSecondPosition()->getId(),
+            $prizes->getSecondPosition()->getTitle(),
+            $prizes->getThirdPosition()->getId(),
+            $prizes->getThirdPosition()->getTitle(),
         );
     }
 }
