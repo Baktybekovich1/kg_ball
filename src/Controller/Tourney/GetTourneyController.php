@@ -40,5 +40,6 @@ class GetTourneyController extends AbstractController
     public function prizes(Request $request): JsonResponse
     {
         return $this->json($this->getTourneyService->getPrizes($request->get('tourneyId')));
+
     }
 }
