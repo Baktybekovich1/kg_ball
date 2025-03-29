@@ -43,7 +43,11 @@ readonly class GetGameService
 
 //        dd($this->goalRepository->getTeamGoalsInGame($game->getWinnerTeam()->getId(), $game->getId()));
         return new GetGameGoalsDto(
+            $game->getWinnerTeam()->getId(),
+            $game->getWinnerTeam()->getTitle(),
             $this->goals($this->goalRepository->getTeamGoalsInGame($game->getWinnerTeam()->getId(), $game->getId())),
+            $game->getLoserTeam()->getId(),
+            $game->getLoserTeam()->getTitle(),
             $this->goals($this->goalRepository->getTeamGoalsInGame($game->getLoserTeam()->getId(), $game->getId()))
         );
 

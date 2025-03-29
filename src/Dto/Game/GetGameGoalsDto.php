@@ -5,8 +5,12 @@ namespace App\Dto\Game;
 class GetGameGoalsDto
 {
     public function __construct(
-        public array $winnerTeamGoals,
-        public array $loserTeamGoals
+        public int    $winnerTeamId,
+        public string $winnerTeamTitle,
+        public array  $winnerTeamGoals,
+        public int    $loserTeamId,
+        public string $loserTeamTitle,
+        public array  $loserTeamGoals
     )
     {
     }
