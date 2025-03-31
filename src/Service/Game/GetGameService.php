@@ -139,7 +139,10 @@ readonly class GetGameService
                         new GetPlayerNameDto(
                             $goal->getAssist()->getPlayer()->getId(),
                             $goal->getAssist()->getPlayer()->getName() . ' ' . $goal->getAssist()->getPlayer()->getSurname()
-                        )
+                        ),
+                        $goal->getId(),
+                        $goal->getPlayer()->getId(),
+                        $goal->getPlayer()->getName() . ' ' . $goal->getPlayer()->getSurname()
                     );
                 } elseif ($goal->getTeam() === $game->getLoserTeam()) {
                     $lAsists[] = new GetAssistInfoDto(
@@ -147,11 +150,13 @@ readonly class GetGameService
                         new GetPlayerNameDto(
                             $goal->getAssist()->getPlayer()->getId(),
                             $goal->getAssist()->getPlayer()->getName() . ' ' . $goal->getAssist()->getPlayer()->getSurname()
-                        )
+                        ),
+                        $goal->getId(),
+                        $goal->getPlayer()->getId(),
+                        $goal->getPlayer()->getName() . ' ' . $goal->getPlayer()->getSurname()
                     );
                 }
             }
-
         }
         return new GetAssistsInGameDto($wAsists, $lAsists);
     }
