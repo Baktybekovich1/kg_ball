@@ -9,6 +9,7 @@ use App\Dto\Team\GetTeamGameInfoDto;
 use App\Dto\Team\GetTeamGameListDto;
 use App\Dto\Team\GetTeamNameAndGoalTotalInGame;
 use App\Dto\Team\GetTeamPointsDto;
+use App\Dto\Team\GetTeamPrizesDto;
 use App\Dto\Team\GetTeamProgressDto;
 use App\Dto\Team\GetTeamSquadListDto;
 use App\Dto\Team\GetTeamStatisticsDto;
@@ -182,7 +183,25 @@ readonly class GetTeamService
         $firstPositionPrizes = $this->tourneyTeamPrizesRepository->findBy(['firstPosition' => $team]);
         $secondPositionPrizes = $this->tourneyTeamPrizesRepository->findBy(['secondPosition' => $team]);
         $thirdPositionPrizes = $this->tourneyTeamPrizesRepository->findBy(['thirdPosition' => $team]);
-        dd($firstPositionPrizes);
+
+        $result = new GetTeamPrizesDto(
+            $this->getPrizeTourney($firstPositionPrizes),
+            $this->getPrizeTourney($secondPositionPrizes),
+            $this->getPrizeTourney($thirdPositionPrizes)
+        );
+
+        return $result;
+
     }
+
+    public function getPrizeTourney($prizes): array
+    {
+        $result = [];
+        foreach ($prizes as $prize) {
+            $result[$prize->getTourney()->getId()] = $prize->getTourney()->getTitle();
+        }
+        return $result;
+    }
+
 
 }
