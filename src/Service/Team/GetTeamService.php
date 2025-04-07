@@ -184,13 +184,11 @@ readonly class GetTeamService
         $secondPositionPrizes = $this->tourneyTeamPrizesRepository->findBy(['secondPosition' => $team]);
         $thirdPositionPrizes = $this->tourneyTeamPrizesRepository->findBy(['thirdPosition' => $team]);
 
-        $result = new GetTeamPrizesDto(
+        return new GetTeamPrizesDto(
             $this->getPrizeTourney($firstPositionPrizes),
             $this->getPrizeTourney($secondPositionPrizes),
             $this->getPrizeTourney($thirdPositionPrizes)
         );
-
-        return $result;
 
     }
 
