@@ -176,4 +176,13 @@ readonly class GetTeamService
         return count($this->gameRepository->findBy(['winnerTeam' => $team])) * 3;
     }
 
+    public function getPrizes(int $teamId)
+    {
+        $team = $this->teamRepository->find($teamId);
+        $firstPositionPrizes = $this->tourneyTeamPrizesRepository->findBy(['firstPosition' => $team]);
+        $secondPositionPrizes = $this->tourneyTeamPrizesRepository->findBy(['secondPosition' => $team]);
+        $thirdPositionPrizes = $this->tourneyTeamPrizesRepository->findBy(['thirdPosition' => $team]);
+        dd($firstPositionPrizes);
+    }
+
 }

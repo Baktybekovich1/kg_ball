@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 use OpenApi\Attributes as OA;
 
-#[OA\Tag(name:'Get api for Team')]
+#[OA\Tag(name: 'Get api for Team')]
 class GetTeamController extends AbstractController
 {
     public function __construct(
@@ -63,6 +63,12 @@ class GetTeamController extends AbstractController
     public function best_teams(): JsonResponse
     {
         return $this->json($this->getTeamService->getBestTeams());
+    }
+
+    #[Route(path: '/prizes/{teamId}', name: 'app_team_prizes', methods: ['GET'])]
+    public function prizes(Request $request): JsonResponse
+    {
+        return $this->json($this->getTeamService->getPrizes($request->get('teamId')));
     }
 
 }
