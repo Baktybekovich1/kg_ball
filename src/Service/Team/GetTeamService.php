@@ -190,6 +190,7 @@ readonly class GetTeamService
             $this->getPrizeTourney($thirdPositionPrizes)
         );
 
+
     }
 
     public function getPrizeTourney($prizes): array
