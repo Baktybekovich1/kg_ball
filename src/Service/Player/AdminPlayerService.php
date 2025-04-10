@@ -2,8 +2,10 @@
 
 namespace App\Service\Player;
 
+use App\Class\Transfer;
 use App\Dto\Player\EditPlayerDto;
 use App\Dto\Player\SetPlayerDto;
+use App\Dto\Player\TransferDto;
 use App\Entity\Player;
 use App\Repository\PlayerRepository;
 use App\Repository\TeamRepository;
@@ -35,7 +37,7 @@ readonly class AdminPlayerService
         return $this->playerRepository->remove($this->playerRepository->find($playerId));
     }
 
-    public function editPlayer(EditPlayerDto $dto,int $id): bool
+    public function editPlayer(EditPlayerDto $dto, int $id): bool
     {
         $player = $this->playerRepository->find($id);
         $player->setName($dto->name)
@@ -45,5 +47,12 @@ readonly class AdminPlayerService
             ->setImg($dto->img);
         $this->playerRepository->save($player);
         return true;
+    }
+
+    public function transfer(TransferDto $dto): bool
+    {
+        $player = $this->playerRepository->find($dto->playerId);
+        $player->setTeam($this->teamRepository->find($dto->teamId));
+        return $this->playerRepository->save($player);
     }
 }

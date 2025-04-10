@@ -4,6 +4,7 @@ namespace App\Controller\MyAdmin\Player;
 
 use App\Dto\Player\EditPlayerDto;
 use App\Dto\Player\SetPlayerDto;
+use App\Dto\Player\TransferDto;
 use App\Repository\PlayerRepository;
 use App\Service\Player\AdminPlayerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,5 +39,11 @@ class PlayerController extends AbstractController
     public function editPlayer(#[MapRequestPayload] EditPlayerDto $dto,Request $request): JsonResponse
     {
         return $this->json($this->adminPlayerService->editPlayer($dto,$request->get('id')));
+    }
+    
+    #[Route(path: '/transfer', name: 'app_admin_player_transfer', methods: ['PATCH'])]
+    public function transfer(#[MapRequestPayload] TransferDto $dto): JsonResponse
+    {
+        return $this->json($this->adminPlayerService->transfer($dto));
     }
 }
