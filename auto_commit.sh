@@ -4,7 +4,7 @@
 
 
 # Файл, в который будем вносить изменения
-DUMMY_FILE="last_commit.log"
+DUMMY_FILE="./last_commit.log"
 
 # Переход в директорию проекта
 cd $PROJECT_PATH || exit
