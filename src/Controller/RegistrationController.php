@@ -27,6 +27,7 @@ final class RegistrationController extends AbstractController
         if ($this->userRepository->existsByUsername($dto->username)) {
             throw new UserAlreadyExistsException();
         }
+        
         $user = new User();
         $user->setUsername($dto->username);
         $user->setPassword($userPasswordHasher->hashPassword($user, $dto->password));
