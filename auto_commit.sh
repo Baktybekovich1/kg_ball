@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Перейти в директорию проекта
-cd /path/to/your/project
-
 # Внести изменения (например, добавить временную метку в файл)
 echo "# Updated on $(date)" >> README.md
 
