@@ -1,5 +1,5 @@
 #!/bin/bash
-
+cd kg_ball
 # Внести изменения (например, добавить временную метку в файл)
 echo "# Updated on $(date)" >> README.md
 
