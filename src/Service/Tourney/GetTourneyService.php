@@ -102,17 +102,21 @@ readonly class GetTourneyService
         );
     }
 
-    public function getPrizes(int $tourneyId): GetTourneyPrizesDto
+    public function getPrizes(int $tourneyId): ?GetTourneyPrizesDto
     {
-        $prizes = $this->tourneyTeamPrizesRepository->findOneBy(['tourney' => $tourneyId]);
-        return new GetTourneyPrizesDto(
-            $prizes->getId(),
-            $prizes->getFirstPosition()->getId(),
-            $prizes->getFirstPosition()->getTitle(),
-            $prizes->getSecondPosition()->getId(),
-            $prizes->getSecondPosition()->getTitle(),
-            $prizes->getThirdPosition()->getId(),
-            $prizes->getThirdPosition()->getTitle(),
-        );
+        try {
+            $prizes = $this->tourneyTeamPrizesRepository->findOneBy(['tourney' => $tourneyId]);
+            return new GetTourneyPrizesDto(
+                $prizes->getId(),
+                $prizes->getFirstPosition()->getId(),
+                $prizes->getFirstPosition()->getTitle(),
+                $prizes->getSecondPosition()->getId(),
+                $prizes->getSecondPosition()->getTitle(),
+                $prizes->getThirdPosition()->getId(),
+                $prizes->getThirdPosition()->getTitle()
+            );
+        } catch (\Throwable $e) {
+            return null;
+        }
     }
 }
