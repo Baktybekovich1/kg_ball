@@ -91,15 +91,20 @@ readonly class GetTourneyService
 
     }
 
-    public function getWinner(int $tourney_id): GetTeamInfoDto
+    public function getWinner(int $tourney_id): ?GetTeamInfoDto
     {
         $tourney = $this->tourneyRepository->find($tourney_id);
-        $winner = $tourney->getTourneyTeamPrizes()->getFirstPosition();
-        return new GetTeamInfoDto(
-            $winner->getId(),
-            $winner->getTitle(),
-            $winner->getLogo()
-        );
+        try {
+            $winner = $tourney->getTourneyTeamPrizes()->getFirstPosition();
+            return new GetTeamInfoDto(
+                $winner->getId(),
+                $winner->getTitle(),
+                $winner->getLogo()
+            );
+        } catch (\Throwable $e) {
+            return null;
+        }
+
     }
 
     public function getPrizes(int $tourneyId): ?GetTourneyPrizesDto
