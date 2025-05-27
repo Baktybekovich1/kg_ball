@@ -120,7 +120,7 @@ class AssistRepository extends ServiceEntityRepository
         return $result;
     }
 
-    public function findTourneyAssistant(int $tourney_id): array
+    public function findTourneyAssistant(int $tourney_id): ?array
     {
         $qb = $this->createQueryBuilder('assist');
         $qb->select('player.id as playerId , concat(player.name,\' \', player.surname) as playerName, COUNT(assist.id) as assistCount')

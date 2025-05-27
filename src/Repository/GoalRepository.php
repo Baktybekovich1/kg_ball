@@ -150,7 +150,7 @@ class GoalRepository extends ServiceEntityRepository
         return $result;
     }
 
-    public function findTourneyBombardier(int $tourney_id): array
+    public function findTourneyBombardier(int $tourney_id): ?array
     {
         $qb = $this->createQueryBuilder('goal');
         $qb->select('player.id as playerId , concat(player.name,\' \', player.surname) as playerName, COUNT(goal.id) as goalCount')
