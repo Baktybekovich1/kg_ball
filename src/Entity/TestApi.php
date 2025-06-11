@@ -30,6 +30,9 @@ class TestApi
     #[ORM\Column(nullable: true)]
     private ?int $sum = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $tariff = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -91,6 +94,18 @@ class TestApi
     public function setSum(?int $sum): static
     {
         $this->sum = $sum;
+
+        return $this;
+    }
+
+    public function getTariff(): ?int
+    {
+        return $this->tariff;
+    }
+
+    public function setTariff(?int $tariff): static
+    {
+        $this->tariff = $tariff;
 
         return $this;
     }

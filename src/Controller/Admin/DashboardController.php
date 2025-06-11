@@ -8,6 +8,7 @@ use App\Entity\Goal;
 use App\Entity\Liga;
 use App\Entity\Player;
 use App\Entity\Team;
+use App\Entity\TestApi;
 use App\Entity\Tourney;
 use App\Entity\TourneyTeamPrizes;
 use App\Entity\TypeOfGoal;
@@ -59,5 +60,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Game', 'fas fa-clock', Game::class);
         yield MenuItem::linkToCrud('Goal', 'fas fa-clock', Goal::class);
         yield MenuItem::linkToCrud('Assist', 'fas fa-clock', Assist::class);
+        yield MenuItem::linkToCrud('Test Api', 'fas fa-clock', TestApi::class);
     }
 }
