@@ -19,19 +19,19 @@ class TourneyPrizesController extends AbstractController
     {
     }
 
-    #[Route(path: '/prizes/add', name: 'app_admin_tourney_prizes', methods: ['POST'])]
+    #[Route(path: '/team/prizes/add', name: 'app_admin_tourney_prizes', methods: ['POST'])]
     public function prizes_add(#[MapRequestPayload] SetTourneyPrizesDto $dto): JsonResponse
     {
         return $this->json($this->prizesService->add($dto));
     }
 
-    #[Route(path: '/prizes/remove/{id}', name: 'app_admin_tourney_prizes_remove', methods: ['DELETE'])]
+    #[Route(path: '/team/prizes/remove/{id}', name: 'app_admin_tourney_prizes_remove', methods: ['DELETE'])]
     public function prizes_remove(Request $request): JsonResponse
     {
         return $this->json($this->prizesService->remove($request->get('id')));
     }
 
-    #[Route(path: '/prizes/edit/{id}', name: 'app_admin_tourney_prizes_edit', methods: ['PATCH'])]
+    #[Route(path: '/team/prizes/edit/{id}', name: 'app_admin_tourney_prizes_edit', methods: ['PATCH'])]
     public function prizes_edit(#[MapRequestPayload] SetTourneyPrizesDto $dto,Request $request): JsonResponse
     {
         return $this->json($this->prizesService->edit($dto,$request->get('id')));

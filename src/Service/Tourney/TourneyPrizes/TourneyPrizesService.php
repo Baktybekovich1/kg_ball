@@ -4,6 +4,9 @@ namespace App\Service\Tourney\TourneyPrizes;
 
 use App\Dto\Tourney\TourneyPrizes\SetTourneyPrizesDto;
 use App\Entity\TourneyTeamPrizes;
+use App\Repository\AssistRepository;
+use App\Repository\GoalRepository;
+use App\Repository\PlayerRepository;
 use App\Repository\TeamRepository;
 use App\Repository\TourneyRepository;
 use App\Repository\TourneyTeamPrizesRepository;
@@ -13,7 +16,10 @@ class TourneyPrizesService
 {
     public function __construct(private readonly TeamRepository              $teamRepository,
                                 private readonly TourneyRepository           $tourneyRepository,
-                                private readonly TourneyTeamPrizesRepository $tourneyTeamPrizesRepository,)
+                                private readonly TourneyTeamPrizesRepository $tourneyTeamPrizesRepository,
+                                private readonly PlayerRepository            $playerRepository,
+    private readonly GoalRepository $goalRepository,
+    private readonly AssistRepository $assistRepository,)
     {
     }
 
@@ -24,6 +30,7 @@ class TourneyPrizesService
         $prizes->setFirstPosition($this->teamRepository->find($dto->firstPositionId));
         $prizes->setSecondPosition($this->teamRepository->find($dto->secondPositionId));
         $prizes->setThirdPosition($this->teamRepository->find($dto->thirdPositionId));
+
         return $this->tourneyTeamPrizesRepository->save($prizes);
     }
 
@@ -33,7 +40,7 @@ class TourneyPrizesService
         return $this->tourneyTeamPrizesRepository->remove($prize);
     }
 
-    public function edit(SetTourneyPrizesDto $dto,int $id): bool
+    public function edit(SetTourneyPrizesDto $dto, int $id): bool
     {
         $prizes = $this->tourneyTeamPrizesRepository->find($id);
         $prizes->setTourney($this->tourneyRepository->find($dto->tourneyId));
