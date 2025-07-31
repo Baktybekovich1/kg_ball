@@ -30,7 +30,7 @@ class TourneyPlayerPrizesService
         $tourneyPlayerPrizes = new TourneyPlayerPrizes();
         $tourney = $this->tourneyRepository->find($dto->tourneyId);
         $tourneyPlayerPrizes
-            ->setTourney($tourney->getId())
+            ->setTourney($tourney)
             ->setBombardier($bombardier)
             ->setAssistant($assistant)
             ->setDefender($defender)
