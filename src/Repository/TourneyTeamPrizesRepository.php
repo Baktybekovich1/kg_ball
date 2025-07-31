@@ -43,6 +43,24 @@ class TourneyTeamPrizesRepository extends ServiceEntityRepository
         return $qb->getQuery()->getSingleScalarResult();
     }
 
+    public function getPoints(int $teamId): int
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "
+    SELECT SUM(points) as total_points
+    FROM (
+        SELECT COUNT(*) * 3 as points FROM tourney_team_prizes WHERE first_position_id = :teamId
+        UNION ALL
+        SELECT COUNT(*) * 2 FROM tourney_team_prizes WHERE second_position_id = :teamId
+        UNION ALL
+        SELECT COUNT(*) * 1 FROM tourney_team_prizes WHERE third_position_id = :teamId
+    ) AS sub
+    ";
+
+        $result = $conn->executeQuery($sql, ['teamId' => $teamId])->fetchOne();
+        return $result;
+    }
+
     public function save(TourneyTeamPrizes $entity): bool
     {
         $this->getEntityManager()->persist($entity);

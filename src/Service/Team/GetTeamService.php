@@ -174,7 +174,7 @@ readonly class GetTeamService
 
     private function pointsCalculate($team): int
     {
-        return count($this->gameRepository->findBy(['winnerTeam' => $team])) * 3;
+        return $this->tourneyTeamPrizesRepository->getPoints($team->getId());
     }
 
     public function getPrizes(int $teamId)
