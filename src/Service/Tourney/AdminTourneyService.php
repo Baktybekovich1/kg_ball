@@ -40,5 +40,17 @@ class AdminTourneyService
         return $this->tourneyRepository->save($tourney);
     }
 
+    public function finishedTourney($id): bool
+    {
+        $tourney = $this->tourneyRepository->find($id);
+        return $tourney->isFinished();
+    }
+
+    public function editFinishedTourney($finished,$id): bool
+    {
+        $tourney = $this->tourneyRepository->find($id);
+        $tourney->setFinished($finished);
+        return $this->tourneyRepository->save($tourney);
+    }
 
 }

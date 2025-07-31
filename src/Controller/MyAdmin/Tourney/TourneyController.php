@@ -5,6 +5,7 @@ namespace App\Controller\MyAdmin\Tourney;
 use App\Dto\Team\EditTeamDto;
 use App\Dto\Team\GetTeamTitleLogoDto;
 use App\Dto\Tourney\SetTourneyDto;
+use App\Dto\Tourney\FinishedDto;
 use App\Service\Tourney\AdminTourneyService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -38,5 +39,18 @@ class TourneyController extends AbstractController
     {
         return $this->json($this->adminTourneyService->editTourney($dto, $request->get('id')));
     }
+
+    #[Route(path: '/finished/{id}', name: 'app_admin_tourney_finished', methods: ['GET'])]
+    public function admin_finished( Request $request): JsonResponse
+    {
+        return $this->json($this->adminTourneyService->finishedTourney($request->get('id')));
+    }
+
+    #[Route(path: '/finished/edit/{id}', name: 'app_admin_tourney_finished_edit', methods: ['PATCH'])]
+    public function admin_tourney_finished_edit(#[MapRequestPayload] FinishedDto $dto, Request $request): JsonResponse
+    {
+        return $this->json($this->adminTourneyService->editFinishedTourney($dto->finished, $request->get('id')));
+    }
+
 
 }
