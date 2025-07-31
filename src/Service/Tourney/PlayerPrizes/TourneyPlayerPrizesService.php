@@ -28,13 +28,16 @@ class TourneyPlayerPrizesService
         $theBest = $this->playerRepository->find($theBest[0]['id']);
         $goalkeeper = $this->playerRepository->find($dto->goalkeeperId);
         $tourneyPlayerPrizes = new TourneyPlayerPrizes();
+        $tourney = $this->tourneyRepository->find($dto->tourneyId);
         $tourneyPlayerPrizes
-            ->setTourney($this->tourneyRepository->find($dto->tourneyId))
+            ->setTourney($tourney->getId())
             ->setBombardier($bombardier)
             ->setAssistant($assistant)
             ->setDefender($defender)
             ->setTheBest($theBest)
             ->setGoalkeeper($goalkeeper);
+        $tourney->setFinished(true);
+        $this->tourneyRepository->save($tourney);
         return $this->tourneyPlayerPrizesRepository->save($tourneyPlayerPrizes);
     }
 
