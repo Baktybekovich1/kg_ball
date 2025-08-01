@@ -21,8 +21,8 @@ class GameRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('game');
         $qb->select('COUNT(game.id)')
             ->where('game.winnerTeam = :teamId')
-            ->orWhere('game.loserTeam = :teamid')
-            ->setParameter('teamid', $teamId);
+            ->orWhere('game.loserTeam = :teamId')
+            ->setParameter('teamId', $teamId);
         return $qb->getQuery()->getSingleScalarResult();
     }
 
@@ -35,6 +35,24 @@ class GameRepository extends ServiceEntityRepository
             ->setParameter('teamId', $teamId);
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function getTeamWinnerGamesCount(int $teamId): ?int
+    {
+        $qb = $this->createQueryBuilder('game');
+        $qb->select('COUNT(game.id)')
+            ->where('game.winnerTeam = :teamId')
+            ->setParameter('teamId', $teamId);
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function getTeamLoserGamesCount(int $teamId): ?int
+    {
+        $qb = $this->createQueryBuilder('game');
+        $qb->select('COUNT(game.id)')
+            ->where('game.loserTeam = :teamId')
+            ->setParameter('teamId', $teamId);
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
     public function GetTeamWinningsVSTeam(int $firstTeamId, int $secondTeamId): ?int
@@ -61,5 +79,6 @@ class GameRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
         return true;
     }
+
 
 }

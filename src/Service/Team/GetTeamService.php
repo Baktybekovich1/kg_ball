@@ -166,6 +166,11 @@ readonly class GetTeamService
                 $team->getId(),
                 $team->getTitle(),
                 $team->getLogo(),
+                $this->gameRepository->GetTeamQuantityAllGames($team->getId()),
+                $this->gameRepository->getTeamWinnerGamesCount($team->getId()),
+                $this->gameRepository->getTeamLoserGamesCount($team->getId()),
+                $this->assistRepository->getTeamAssistQuantity($team->getId()),
+                $this->goalRepository->getTeamGoalQuantity($team->getId()),
                 $this->pointsCalculate($team)
             );
         }
