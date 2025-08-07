@@ -135,6 +135,26 @@ class AssistRepository extends ServiceEntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
+    public function findMonthAssistant(string $startDate, string $endDate): array
+    {
+        $qb = $this->createQueryBuilder('a'); // a = assist
+
+        $qb->select('p.id as playerId ,COUNT(a.id) as assistCount')
+            ->join('a.goal', 'g')
+            ->join('g.game', 'ga')
+            ->join('ga.tourney', 't')
+            ->join('a.player', 'p')
+            ->where('t.date BETWEEN :startDate AND :endDate')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->groupBy('p.id')
+            ->orderBy('assistCount', 'DESC')
+            ->setMaxResults(1);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+
     public function save(Assist $entity): bool
     {
         $this->getEntityManager()->persist($entity);

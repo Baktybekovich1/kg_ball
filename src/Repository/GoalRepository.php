@@ -164,6 +164,22 @@ class GoalRepository extends ServiceEntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
+    public function findMonthBombardier(string $startDate, string $endDate): ?array
+    {
+        $qb = $this->createQueryBuilder('goal');
+        $qb->select('player.id as playerId ,COUNT(goal.id) as goalCount')
+            ->join('goal.player', 'player')
+            ->join('goal.game', ' game')
+            ->join('game.tourney', ' game_tourney')
+            ->where('game_tourney.date BETWEEN :startDate AND :endDate')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->groupBy('player.id')
+            ->orderBy('COUNT(goal.id)', 'DESC')
+            ->setMaxResults(1);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
 
 
     public function save(Goal $entity): bool
