@@ -47,6 +47,11 @@ tourney_admin_controllers:
   prefix: /api/admin/tourney
   type: attribute
 
+month_player_award_admin_controllers:
+  resource: ../src/Controller/MyAdmin/MonthPlayerAward
+  prefix: /api/admin/month/player_award
+  type: attribute
+
 team_controllers:
   resource: ../src/Controller/Team
   prefix: /team

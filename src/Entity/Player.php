@@ -43,10 +43,17 @@ class Player
     #[ORM\OneToMany(targetEntity: Assist::class, mappedBy: 'player')]
     private Collection $assists;
 
+    /**
+     * @var Collection<int, MonthPlayerAward>
+     */
+    #[ORM\OneToMany(targetEntity: MonthPlayerAward::class, mappedBy: 'bombardier')]
+    private Collection $monthPlayerAwards;
+
     public function __construct()
     {
         $this->goals = new ArrayCollection();
         $this->assists = new ArrayCollection();
+        $this->monthPlayerAwards = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -186,6 +193,36 @@ class Player
     public function setImg(?string $img): void
     {
         $this->img = $img;
+    }
+
+    /**
+     * @return Collection<int, MonthPlayerAward>
+     */
+    public function getMonthPlayerAwards(): Collection
+    {
+        return $this->monthPlayerAwards;
+    }
+
+    public function addMonthPlayerAward(MonthPlayerAward $monthPlayerAward): static
+    {
+        if (!$this->monthPlayerAwards->contains($monthPlayerAward)) {
+            $this->monthPlayerAwards->add($monthPlayerAward);
+            $monthPlayerAward->setBombardier($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMonthPlayerAward(MonthPlayerAward $monthPlayerAward): static
+    {
+        if ($this->monthPlayerAwards->removeElement($monthPlayerAward)) {
+            // set the owning side to null (unless already changed)
+            if ($monthPlayerAward->getBombardier() === $this) {
+                $monthPlayerAward->setBombardier(null);
+            }
+        }
+
+        return $this;
     }
 
 
