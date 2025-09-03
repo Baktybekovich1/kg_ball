@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Service\MonthPlayerAward;
+namespace App\Service\MonthAward;
 
-use App\Dto\MonthPlayerAward\SetMonthPlayerAwardDto;
+use App\Dto\MonthAward\SetMonthAwardDto;
 use App\Entity\MonthPlayerAward;
 use App\Repository\AssistRepository;
 use App\Repository\GoalRepository;
@@ -20,7 +20,7 @@ class MonthPlayerAwardEditService
     {
     }
 
-    public function add(SetMonthPlayerAwardDto $dto)
+    public function add(SetMonthAwardDto $dto): bool
     {
         $bombardierId = $this->goalRepository->findMonthBombardier($dto->startDate, $dto->endDate)['playerId'];
         $assistantId = $this->assistRepository->findMonthAssistant($dto->startDate, $dto->endDate)['playerId'];
@@ -32,14 +32,12 @@ class MonthPlayerAwardEditService
             ->setAssistant($this->playerRepository->find($assistantId))
             ->setTheBest($this->playerRepository->find($theBestId))
             ->setDefender($this->playerRepository->find($dto->defenderId))
-            ->setGoalkeeper($this->playerRepository->find($dto->goalkeeperId))
-            ->setStartDate($dto->startDate)
-            ->setEndDate($dto->endDate);
+            ->setGoalkeeper($this->playerRepository->find($dto->goalkeeperId));
 
         return $this->monthPlayerAwardRepository->save($award);
     }
 
-    public function edit($monthId , SetMonthPlayerAwardDto $dto): bool
+    public function edit($monthId , SetMonthAwardDto $dto): bool
     {
         $bombardierId = $this->goalRepository->findMonthBombardier($dto->startDate, $dto->endDate)['playerId'];
         $assistantId = $this->assistRepository->findMonthAssistant($dto->startDate, $dto->endDate)['playerId'];

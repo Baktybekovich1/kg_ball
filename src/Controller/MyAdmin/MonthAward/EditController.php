@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controller\MyAdmin\MonthPlayerAward;
+namespace App\Controller\MyAdmin\MonthAward;
 
-use App\Dto\MonthPlayerAward\SetMonthPlayerAwardDto;
-use App\Service\MonthPlayerAward\MonthPlayerAwardEditService;
+use App\Dto\MonthAward\SetMonthAwardDto;
+use App\Service\MonthAward\MonthPlayerAwardEditService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,18 +15,18 @@ use OpenApi\Attributes as OA;
 class EditController extends AbstractController
 {
     public function __construct(
-        private MonthPlayerAwardEditService $monthPlayerAwardEditService,
+        private readonly MonthPlayerAwardEditService $monthPlayerAwardEditService
     )
     {
     }
 
     #[Route(path: '/add', name: 'month_award_add', methods: ['POST'])]
-    public function add(#[MapRequestPayload] SetMonthPlayerAwardDto $dto): JsonResponse
+    public function add(#[MapRequestPayload] SetMonthAwardDto $dto): JsonResponse
     {
         return $this->json($this->monthPlayerAwardEditService->add($dto));
     }
     #[Route(path: '/edit/{monthId}', name: 'month_award_edit', methods: ['PATCH'])]
-    public function edit(#[MapRequestPayload] SetMonthPlayerAwardDto $dto,Request $request): JsonResponse
+    public function edit(#[MapRequestPayload] SetMonthAwardDto $dto, Request $request): JsonResponse
     {
         return $this->json($this->monthPlayerAwardEditService->edit($request->get('monthId'), $dto));
     }

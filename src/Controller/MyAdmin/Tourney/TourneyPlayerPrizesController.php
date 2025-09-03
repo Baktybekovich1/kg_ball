@@ -10,6 +10,7 @@ use App\Repository\TourneyRepository;
 use App\Service\Tourney\PlayerPrizes\TourneyPlayerPrizesService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use OpenApi\Attributes as OA;
@@ -31,6 +32,12 @@ class TourneyPlayerPrizesController extends AbstractController
     public function player_prizes_add(#[MapRequestPayload] SetTourneyPlayerPrizesDto $dto): JsonResponse
     {
         return $this->json($this->tourneyPlayerPrizesService->add($dto));
+    }
+
+    #[Route(path: '/player/prizes/remove/{tourneyId}', name: 'app_player_prizes_remove', methods: ['DELETE'])]
+    public function player_prizes_remove(Request $request): JsonResponse
+    {
+        return $this->json($this->tourneyPlayerPrizesService->remove($request->get('tourneyId')));
     }
 
 

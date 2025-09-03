@@ -5,10 +5,13 @@ namespace App\Service\Tourney;
 use App\Dto\Tourney\SetTourneyDto;
 use App\Entity\Tourney;
 use App\Repository\TourneyRepository;
+use App\Service\Tourney\PlayerPrizes\TourneyPlayerPrizesService;
+use App\Service\Tourney\TourneyPrizes\TourneyPrizesService;
 
 class AdminTourneyService
 {
-    public function __construct(private readonly TourneyRepository $tourneyRepository)
+    public function __construct(private readonly TourneyRepository $tourneyRepository,
+    private readonly TourneyPlayerPrizesService $tourneyPlayerPrizesService)
     {
     }
 
@@ -50,6 +53,9 @@ class AdminTourneyService
     {
         $tourney = $this->tourneyRepository->find($id);
         $tourney->setFinished($finished);
+        if ($finished === false) {
+            $this->tourneyPlayerPrizesService->remove($tourney->getId());
+        }
         return $this->tourneyRepository->save($tourney);
     }
 

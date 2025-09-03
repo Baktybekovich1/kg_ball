@@ -39,6 +39,12 @@ class Team
     #[ORM\ManyToOne(inversedBy: 'teams')]
     private ?Liga $liga = null;
 
+    /**
+     * @var Collection<int, MonthTeamAward>
+     */
+    #[ORM\OneToMany(targetEntity: MonthTeamAward::class, mappedBy: 'bestTeam')]
+    private Collection $monthTeamAwards;
+
     public function __toString(): string
     {
         return $this->title ?? 'Unnamed Team';
@@ -50,6 +56,7 @@ class Team
         $this->goals = new ArrayCollection();
         $this->assists = new ArrayCollection();
         $this->tourneyTeamPrizes = new ArrayCollection();
+        $this->monthTeamAwards = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -158,6 +165,36 @@ class Team
     public function setLiga(?Liga $liga): static
     {
         $this->liga = $liga;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MonthTeamAward>
+     */
+    public function getMonthTeamAwards(): Collection
+    {
+        return $this->monthTeamAwards;
+    }
+
+    public function addMonthTeamAward(MonthTeamAward $monthTeamAward): static
+    {
+        if (!$this->monthTeamAwards->contains($monthTeamAward)) {
+            $this->monthTeamAwards->add($monthTeamAward);
+            $monthTeamAward->setBestTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMonthTeamAward(MonthTeamAward $monthTeamAward): static
+    {
+        if ($this->monthTeamAwards->removeElement($monthTeamAward)) {
+            // set the owning side to null (unless already changed)
+            if ($monthTeamAward->getBestTeam() === $this) {
+                $monthTeamAward->setBestTeam(null);
+            }
+        }
 
         return $this;
     }

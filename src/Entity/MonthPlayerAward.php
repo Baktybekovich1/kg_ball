@@ -13,9 +13,6 @@ class MonthPlayerAward
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $name = null;
-
     #[ORM\ManyToOne(inversedBy: 'monthPlayerAwards')]
     private ?Player $bombardier = null;
 
@@ -31,28 +28,15 @@ class MonthPlayerAward
     #[ORM\ManyToOne]
     private ?Player $defender = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $startDate = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $endDate = null;
+    #[ORM\ManyToOne(inversedBy: 'monthPlayerAwards')]
+    private ?Months $month = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
 
-    public function setName(?string $name): static
-    {
-        $this->name = $name;
-
-        return $this;
-    }
 
     public function getBombardier(): ?Player
     {
@@ -114,27 +98,17 @@ class MonthPlayerAward
         return $this;
     }
 
-    public function getStartDate(): ?string
+    public function getMonth(): ?Months
     {
-        return $this->startDate;
+        return $this->month;
     }
 
-    public function setStartDate(?string $startDate): static
+    public function setMonth(?Months $month): static
     {
-        $this->startDate = $startDate;
+        $this->month = $month;
 
         return $this;
     }
 
-    public function getEndDate(): ?string
-    {
-        return $this->endDate;
-    }
 
-    public function setEndDate(?string $endDate): static
-    {
-        $this->endDate = $endDate;
-
-        return $this;
-    }
 }

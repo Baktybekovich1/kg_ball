@@ -25,8 +25,8 @@ services:
       - ../:/app:cached
       - certs:/etc/letsencrypt
       - "./nginx/conf.d.prod:/etc/nginx/conf.d"
-#      - ./certbot/conf:/etc/letsencrypt
-#      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
     ports:
       - "${NGINX_EXTERNAL_PORT}:80"
       - "443:443"

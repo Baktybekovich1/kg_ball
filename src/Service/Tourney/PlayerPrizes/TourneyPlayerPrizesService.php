@@ -10,6 +10,7 @@ use App\Repository\GoalRepository;
 use App\Repository\PlayerRepository;
 use App\Repository\TourneyPlayerPrizesRepository;
 use App\Repository\TourneyRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class TourneyPlayerPrizesService
 {
@@ -41,6 +42,10 @@ class TourneyPlayerPrizesService
         return $this->tourneyPlayerPrizesRepository->save($tourneyPlayerPrizes);
     }
 
+    public function remove(int $tourneyId): bool
+    {
+        return $this->tourneyPlayerPrizesRepository->remove($this->tourneyPlayerPrizesRepository->findOneBy([ 'tourney' =>  $tourneyId]));
+    }
 
 
 }
