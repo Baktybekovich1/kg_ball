@@ -11,3 +11,5 @@ git commit -m "Automated commit on $(date)"
 
 # Отправить изменения на GitHub
 git push origin main
+
+
