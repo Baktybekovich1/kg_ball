@@ -6,7 +6,7 @@ services:
       context: ../
       dockerfile: docker/php/Dockerfile.prod
     container_name: ${PHP_CONTAINER_NAME}
-    env_file: .env 
+    env_file: .env
     expose:
       - 9000
     volumes:
@@ -23,7 +23,8 @@ services:
       - php
     volumes:
       - ../:/app:cached
-      - ./certbot/conf:/etc/letsencrypt
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+#      - ./certbot/conf:/etc/letsencrypt
 #      - certs:/etc/letsencrypt
       - "./nginx/conf.d.prod:/etc/nginx/conf.d"
 #      - ./certbot/conf:/etc/letsencrypt
